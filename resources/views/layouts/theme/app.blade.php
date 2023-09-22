@@ -1,56 +1,100 @@
 <!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
-    <title>SISTEMA LWPOS</title>
-    <link rel="icon" type="image/x-icon" href="/assets/img/favicon2.ico">
+<html lang="en">
 
-    <!-- BEGIN GLOBAL MANDATORY STYLES -->
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Sistema ONEMAX</title>
     @include('layouts.theme.styles')
-    <!-- END PAGE LEVEL PLUGINS/CUSTOM STYLES -->
 
 </head>
-<body class="dashboard-analytics">
 
-    <!-- BEGIN LOADER -->
-    <div id="load_screen"> <div class="loader"> <div class="loader-content">
-        <div class="spinner-grow align-self-center"></div>
-    </div></div></div>
-    <!--  END LOADER -->
+<body class="bg-theme bg-theme1">
 
-    <!--  BEGIN NAVBAR  -->
-     @include('layouts.theme.header')
-    <!--  END NAVBAR  -->
+    <!-- Start wrapper-->
+    <div id="wrapper">
 
-    <!--  BEGIN MAIN CONTAINER  -->
-    <div class="main-container" id="container">
+        <!--Start sidebar-wrapper-->
+        @include('layouts.theme.sidebar')
+        <!--End sidebar-wrapper-->
 
-        <div class="overlay"></div>
-        <div class="search-overlay"></div>
+        <!--Start topbar header-->
+        @include('layouts.theme.header')
+        <!--End topbar header-->
 
-        <!--  BEGIN SIDEBAR  -->
-         @include('layouts.theme.sidebar')
-        <!--  END SIDEBAR  -->
-        
-        <!--  BEGIN CONTENT AREA  -->
-        <div id="content" class="main-content">
-            
-            <div class="layout-px-spacing">
+        <div class="clearfix"></div>
+
+        <div class="content-wrapper">
+            <div class="container-fluid">
+
+                <!--Start Dashboard Content-->
                 @yield('content')
+                <div class="card mt-3"></div>
+                <div class="row"></div>
+                <!--End Dashboard Content-->
+
+                <!--start overlay-->
+                <div class="overlay toggle-menu"></div>
+                <!--end overlay-->
+
             </div>
+            <!-- End container-fluid-->
 
-            @include('layouts.theme.footer')
+        </div><!--End content-wrapper-->
+        <!--Start Back To Top Button-->
+        <a href="javaScript:void();" class="back-to-top"><i class="fa fa-angle-double-up"></i> </a>
+        <!--End Back To Top Button-->
+
+        <!--Start footer-->
+        @include('layouts.theme.footer')
+        <!--End footer-->
+
+        <!--start color switcher-->
+        <div class="right-sidebar">
+            <div class="switcher-icon">
+                <i class="zmdi zmdi-settings zmdi-hc-spin"></i>
+            </div>
+            <div class="right-sidebar-content">
+
+                <p class="mb-0">Gaussion Texture</p>
+                <hr>
+
+                <ul class="switcher">
+                    <li id="theme1"></li>
+                    <li id="theme2"></li>
+                    <li id="theme3"></li>
+                    <li id="theme4"></li>
+                    <li id="theme5"></li>
+                    <li id="theme6"></li>
+                </ul>
+
+                <p class="mb-0">Gradient Background</p>
+                <hr>
+
+                <ul class="switcher">
+                    <li id="theme7"></li>
+                    <li id="theme8"></li>
+                    <li id="theme9"></li>
+                    <li id="theme10"></li>
+                    <li id="theme11"></li>
+                    <li id="theme12"></li>
+                    <li id="theme13"></li>
+                    <li id="theme14"></li>
+                    <li id="theme15"></li>
+                </ul>
+
+            </div>
         </div>
-        <!--  END CONTENT AREA  -->
+        <!--end color switcher-->
 
-    </div>
-    <!-- END MAIN CONTAINER -->
+    </div><!--End wrapper-->
 
-    <!-- BEGIN GLOBAL MANDATORY SCRIPTS -->
     @include('layouts.theme.scripts')
-    <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
+
 
 </body>
+
 </html>
