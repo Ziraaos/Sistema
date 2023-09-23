@@ -75,7 +75,7 @@ class CategoriesController extends Component
         }
 
         $this->resetUI(); // Limpiar las cajas de texto del formulario
-        $this->emit('category-added','categoría Registrada');
+        $this->emit('category-added','Categoría Registrada');
     }
 
     public function Update(){
@@ -83,9 +83,9 @@ class CategoriesController extends Component
             'name' => "required|min:3|unique:categories,name,{$this->selected_id}"
         ];
         $messages = [
-            'name.required' => 'Nombre de Categoría requerido',
+            'name.required' => 'Nombre de categoría requerido',
             'name.min' => 'El nombre de la categoría debe tener al menos 3 caracteres',
-            'name.unique' => 'El Nombre de la Categoría ya existe!',
+            'name.unique' => 'El Nombre de la categoría ya existe!',
         ];
         $this->validate($rules, $messages);
 

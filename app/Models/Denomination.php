@@ -16,20 +16,10 @@ class Denomination extends Model
     ];
 
 
-    // public function getImageAttribute($image){
-    //     if (file_exists('storage/denominations/' . $image)) {
-    //         return $image;
-    //     }else{
-    //         return 'noimg.jpg';
-    //     }
-    // }
-
-    // Esto si me funciono! encontre la funcion is_null en internet
-    public function getImageAttribute($image)
-    {
-        if (!is_null($image)) {
-            return $image;
-        } else {
+    public function getImagenAttribute(){
+        if (!is_null($this->image)) {
+            return (file_exists('storage/denominations/' . $this->image) ? 'denominations/' . $this->image : 'noimg.jpg');
+        }else{
             return 'noimg.jpg';
         }
     }

@@ -30,6 +30,6 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::get('/blank', [HomeController::class, 'test'])->name('test');
 
 Route::get('categories', CategoriesController::class);
-/* Route::get('products', ProductsController::class);
+Route::get('products', ProductsController::class);
 Route::get('coins', CoinsController::class);
-Route::get('pos', PosController::class); */
+Route::get('pos', PosController::class);

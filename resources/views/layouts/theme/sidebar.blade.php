@@ -7,20 +7,20 @@
     </div>
     <ul class="sidebar-menu do-nicescrol">
         <li class="sidebar-header">MAIN NAVIGATION</li>
-        <li class="active">
-            <a href="#" data-active="true">
+        <li class="">
+            <a href="{{ url('categories') }}" data-active="true">
                 <i class="zmdi zmdi-view-dashboard"></i> <span>Categorías</span>
             </a>
         </li>
 
         <li class="">
-            <a href="#" data-active="false">
+            <a href="{{ url('products') }}" data-active="false">
                 <i class="zmdi zmdi-playstation"></i> <span>Productos</span>
             </a>
         </li>
 
         <li class="">
-            <a href="#" data-active="false">
+            <a href="{{ url('pos') }}" data-active="false">
                 <i class="zmdi zmdi-format-list-bulleted"></i> <span>Ventas</span>
             </a>
         </li>
@@ -51,7 +51,7 @@
         </li>
 
         <li class="">
-            <a href="#" data-active="false">
+            <a href="{{ url('coins') }}" data-active="false">
                 <i class="zmdi zmdi-face"></i> <span>Monedas</span>
             </a>
         </li>

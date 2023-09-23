@@ -1,5 +1,4 @@
 <div class="card">
-    {{-- @include('livewire.category.form') --}} {{-- Obs. sacar afuera del div --}}
     <div class="card-header">{{$componentName}} | {{$pageTitle}}
         <div class="card-action">
             <div class="dropdown">
@@ -21,64 +20,70 @@
                 <thead>
                     <tr>
                         <th scope="col">#</th>
-                        <th scope="col">Descripción</th>
+                        <th scope="col">Tipo</th>
+                        <th scope="col">Valor</th>
                         <th scope="col">Imagen</th>
                         <th scope="col">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($categories as $category)
+                    @foreach ($data as $coin)
                     <tr>
-                        <th scope="row">{{$category->id}}</th>
-                        <td>{{$category->name}}</td>
+                        <th scope="row">{{$coin->id}}</th>
+                        <td>{{ $coin->type }}</td>
+                        <td>Bs. {{ number_format($coin->value, 2) }}</td>
                         <td>
                             <span>
-                                <img src="{{ asset('storage/' .$category->imagen) }}" height="70" width="80" class="rounded" alt="no-image">
+                                <img src="{{ asset('storage/' .$coin->imagen) }}" height="70" width="80" class="rounded" alt="no-image">
                             </span>
                         </td>
                         <td>
-                            <a href="javascript:void(0)" wire:click="Edit('{{$category->id}}')" class="btn btn-info" title="Edit">
+                            <a href="javascript:void(0)" wire:click="Edit('{{$coin->id}}')" class="btn btn-info" title="Edit">
                                 <i class="fas fa-edit"></i>
                             </a>
-                            {{-- @if($category->products->count() < 1) --}}
-                            <a href="javascript:void(0)" onclick="Confirm('{{$category->id}}' , '{{ $category->products->count() }}')" class="btn btn-danger" title="Delete">
+                            <a href="javascript:void(0)" onclick="Confirm('{{$coin->id}}')" class="btn btn-danger" title="Delete">
                                 <i class="fas fa-trash"></i>
                             </a>
-                            {{-- @endif --}}
                         </td>
                     </tr>
                     @endforeach
                 </tbody>
             </table>
-            {{$categories->links()}}
+            {{$data->links()}}
         </div>
     </div>
-    @include('livewire.category.form')
+    @include('livewire.denominations.form')
 </div>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        window.livewire.on('category-added', msg =>{
+        //events
+
+        window.livewire.on('item-added', msg =>{
             $('#theModal').modal('hide');
             noty(msg)
         });
-        window.livewire.on('category-updated', msg =>{
+        window.livewire.on('item-updated', msg =>{
             $('#theModal').modal('hide');
             noty(msg)
         });
-        window.livewire.on('category-deleted', msg =>{
+        window.livewire.on('item-deleted', msg =>{
             noty(msg)
         });
-        window.livewire.on('hide-modal', msg =>{
-            $('#theModal').modal('hide');
-        });
+
         window.livewire.on('show-modal', msg =>{
             $('#theModal').modal('show');
         });
-        window.livewire.on('hidden.bs.modal', msg =>{
+        window.livewire.on('modal-hide', msg =>{
+            $('#theModal').modal('hide');
+        });
+
+        //Cuando demos boton cerrar ocultamos todos los errores que se hayan mostrado en ventana modal
+        $('#theModal').on('hidden.bs.modal', function (e) {
             $('.er').css('display','none');
         });
-    });
+
+    })
 
     function Confirm(id, products){
         if(products > 0){
@@ -91,9 +96,9 @@
             type: 'warning',
             showCancelButton: true,
             cancelButtonText: 'Cerrar',
-            /* cancelButtonColor: '#fff', */
+            cancelButtonColor: '#fff',
             confirmButtonText: 'Aceptar',
-            /* confirmButtonColor: '#3B3F5C' */
+            confirmButtonColor: '#3B3F5C'
         }).then(function(result){
             if(result.value){
                 window.livewire.emit('deleteRow', id)

@@ -1,6 +1,6 @@
 <!-- loader-->
-<link href="{{ asset('assets/css/pace.min.css') }}" rel="stylesheet" />
-<script src="{{ asset('assets/js/pace.min.js') }}"></script>
+{{-- <link href="{{ asset('assets/css/pace.min.css') }}" rel="stylesheet" />
+<script src="{{ asset('assets/js/pace.min.js') }}"></script> --}}
 <!--favicon-->
 <link rel="icon" href="{{ asset('assets/images/favicon.ico') }}" type="image/x-icon">
 <!-- Vector CSS -->
