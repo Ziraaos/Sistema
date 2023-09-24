@@ -26,7 +26,7 @@
                                         @endif
                                     </td>
                                     <td><h6>{{ $item->name }}</h6></td>
-                                    <td class="text-center">${{ number_format($item->price, 2) }}</td>
+                                    <td class="text-center">Bs. {{ number_format($item->price, 2) }}</td>
                                     <td>
                                         <input type="number" id="r{{ $item->id }}"
                                             wire:change = "updateQty({{ $item->id }}, $('#r' + {{ $item->id }}).val() )"
@@ -37,21 +37,21 @@
                                     </td>
                                     <td class="text-center">
                                         <h6>
-                                            ${{ number_format($item->price * $item->quantity, 2) }}
+                                            Bs. {{ number_format($item->price * $item->quantity, 2) }}
                                         </h6>
                                     </td>
                                     <td class="text-center">
-                                        <button 
+                                        <button
                                             class="btn btn-dark mbmobile"
-                                            onclick="Confirm('{{ $item->id }}', 'removeItem', '¿CONFIRMAS ELIMINAR EL REGISTRO?')">
+                                            onclick="Confirm('{{ $item->id }}', 'removeItem', '¿CONFIRMAS ELIMINAR EL REGISTRO?')" class="btn btn-dark mbmobile">
                                             <i class="fas fa-trash-alt"></i>
                                         </button>
-                                        <button 
+                                        <button
                                             class="btn btn-dark mbmobile"
                                             wire:click.prevent="decreaseQty({{ $item->id }})">
                                             <i class="fas fa-minus"></i>
                                         </button>
-                                        <button 
+                                        <button
                                             class="btn btn-dark mbmobile"
                                             wire:click.prevent="increaseQty({{ $item->id }})">
                                             <i class="fas fa-plus"></i>

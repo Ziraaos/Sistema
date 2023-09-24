@@ -18,19 +18,21 @@
 <!-- Custom Style-->
 <link href="{{ asset('assets/css/app-style.css') }}" rel="stylesheet" />
 
-{{-- por agregar --}}
 <link href="{{ asset('plugins/font-icons/fontawesome/css/fontawesome.css') }}" rel="stylesheet" type="text/css">
 <link href="{{ asset('css/fontawesome.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('assets/css/elements/avatar.css') }}" rel="stylesheet" type="text/css" />
 
-{{-- agregado --}}
 <link href="{{ asset('plugins/sweetalerts/sweetalert.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('plugins/notification/snackbar/snackbar.min.css') }}" rel="stylesheet" type="text/css" />
 
-{{-- por agregar --}}
 <link href="{{ asset('css/custom.css') }}" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/widgets/modules-widgets.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/forms/theme-checkbox-radio.css') }}">
+
+{{-- por agregar para cuadro pos --}}
+{{-- <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/apps/scrumboard.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/apps/notes.css') }}"> --}}
+
 
 <style>
     aside {

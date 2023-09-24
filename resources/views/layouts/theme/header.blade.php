@@ -6,12 +6,13 @@
                     <i class="icon-menu menu-icon"></i>
                 </a>
             </li>
-            <li class="nav-item">
+            {{-- <li class="nav-item">
                 <form class="search-bar">
                     <input type="text" class="form-control" placeholder="Enter keywords">
                     <a href="javascript:void();"><i class="icon-magnifier"></i></a>
                 </form>
-            </li>
+            </li> --}}
+            <livewire:search-controller>
         </ul>
 
         <ul class="navbar-nav align-items-center right-nav-link">

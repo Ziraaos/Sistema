@@ -12,7 +12,7 @@
             @include('livewire.pos.partials.total')
             {{-- DENOMINACIONES --}}
             @include('livewire.pos.partials.coins')
-        </div> 
+        </div>
     </div>
 </div>
 
@@ -22,7 +22,7 @@
 try {
     onScan.attachTo(document, {
         suffixKeyCodes: [13], // enter-key expected at the end of a scan
-        onScan: function(barcode) { 
+        onScan: function(barcode) {
             console.log(barcode)
             window.livewire.emit('scan-code', barcode)
         },

@@ -1,6 +1,6 @@
 <div id="sidebar-wrapper" data-simplebar="" data-simplebar-auto-hide="true">
     <div class="brand-logo">
-        <a href="index.html">
+        <a href="{{url('home')}}">
             <img src="assets/images/O.png" class="logo-icon" alt="logo icon">
             <h5 class="logo-text">SIGECOMOON</h5>
         </a>

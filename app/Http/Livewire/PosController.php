@@ -3,15 +3,18 @@
 namespace App\Http\Livewire;
 
 use App\Models\Product;
+use App\Models\Sale;
+use App\Models\SaleDetail;
+use Illuminate\Support\Facades\Redirect;
 use Livewire\Component;
 use App\Models\Denomination;
-use Illuminate\Support\Facades\DB;
+use DB;
 use Darryldecode\Cart\Facades\CartFacade as Cart;
 
 class PosController extends Component
 {
     public $total, $itemsQuantity, $efectivo, $change;
-    
+
     public function mount()
     {
         $this->efectivo;
@@ -22,7 +25,7 @@ class PosController extends Component
 
     public function render()
     {
-        $this->denominations = Denomination::all();
+        /* $this->denominations = Denomination::all(); */
         return view('livewire.pos.component', [
             'denominations' => Denomination::orderBy('value', 'desc')->get(),
             'cart' => Cart::getContent()->sortBy('name')
@@ -46,10 +49,10 @@ class PosController extends Component
     public function ScanCode($barcode, $cant = 1)
     {
         // dd($barcode);
-        
+
         $product = Product::where('barcode', $barcode)->first();
-        
-        if ($product == null || empty($empty)) {
+
+        if ($product == null ) {
             $this->emit('scan-notfound', 'El producto no está registrado');
         }else{
             if ($this->InCart($product->id)) {
@@ -84,7 +87,7 @@ class PosController extends Component
     {
         $title = '';
         $product = Product::find($productId);
-        
+
         $exist = Cart::get($productId);
         if ($exist) {
             $title = 'Cantidad actualizada';
@@ -106,7 +109,7 @@ class PosController extends Component
         $this->emit('scan-ok', $title);
     }
 
-    public function updateQty($product, $cant = 1)
+    public function updateQty($productId, $cant = 1)
     {
         $title = '';
         $product = Product::find($productId);
@@ -185,6 +188,7 @@ class PosController extends Component
 
         DB::beginTransaction();
         try {
+            /* dd(Auth()->user()->id); */
             $sale = Sale::create([
                 'total' => $this->total,
                 'items' => $this->itemsQuantity,
@@ -193,14 +197,14 @@ class PosController extends Component
                 'user_id' => Auth()->user()->id
             ]);
 
-            if (sale) {
+            if ($sale) {
                 $items = Cart::getContent();
                 foreach ($items as $item) {
                     SaleDetail::create([
                         'price' => $item->price,
                         'quantity' => $item->quantity,
                         'product_id' => $item->id,
-                        'sale_' => $sale->id
+                        'sale_id' => $sale->id
                     ]);
                     //update stock
                     $product = Product::find($item->id);
@@ -218,7 +222,7 @@ class PosController extends Component
             $this->change = 0;
             $this->total = Cart::getTotal();
             $this->itemsQuantity = Cart::getTotalQuantity();
-            $this->emit('scan-ok', 'Venta registrada con éxito');
+            $this->emit('sale-ok', 'Venta registrada con éxito');
             $this->emit('print-ticket', $sale->id);
         } catch (Exception $e) {
             DB::rollback();

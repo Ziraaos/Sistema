@@ -11,7 +11,7 @@
 
 
     function Confirm(id, eventName, text){
-        
+
         swal({
             title: 'CONFIRMAR',
             text: text,
@@ -23,10 +23,10 @@
             confirmButtonColor: '#3B3F5C'
         }).then(function(result){
             if(result.value){
-                window.livewire.emit('eventName', id)
+                window.livewire.emit(eventName, id)
                 swal.close()
             }
         })
-    }    
+    }
 
 </script>

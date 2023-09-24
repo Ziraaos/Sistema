@@ -3,7 +3,7 @@
 try {
     onScan.attachTo(document, {
         suffixKeyCodes: [13], // enter-key expected at the end of a scan
-        onScan: function(barcode) { 
+        onScan: function(barcode) {
             console.log(barcode)
             window.livewire.emit('scan-code', barcode)
         },
@@ -13,7 +13,7 @@ try {
     });
     console.log('Scanner ready!');
 } catch (e) {
-    console.log('Error de lectura', e);
+    console.log('Error de lectura: ', e);
 }
 
 </script>

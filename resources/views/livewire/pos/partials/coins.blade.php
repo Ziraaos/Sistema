@@ -33,7 +33,7 @@
                                 </span>
                             </div>
                         </div>
-                        <h4 class="text-muted">Cambio: ${{ number_format($change, 2) }}</h4>
+                        <h4 class="text-muted">Cambio: Bs. {{ number_format($change, 2) }}</h4>
                         <div class="row justify-content-between mt-5">
                             <div class="col-sm-12 col-md-12 col-lg-6">
                                 @if ($total > 0)
