@@ -26,26 +26,26 @@
         </li>
 
         <li class="">
-            <a href="#" data-active="false">
+            <a href="{{ url('roles') }}" data-active="false">
                 <i class="zmdi zmdi-grid"></i> <span>Roles</span>
             </a>
         </li>
 
         <li class="">
-            <a href="#" data-active="false">
+            <a href="{{ url('permisos') }}" data-active="false">
                 <i class="zmdi zmdi-calendar-check"></i> <span>Permisos</span>
                 <small class="badge float-right badge-light">New</small>
             </a>
         </li>
 
         <li class="">
-            <a href="#" data-active="false">
+            <a href="{{ url('asignar') }}" data-active="false">
                 <i class="zmdi zmdi-mood"></i> <span>Asignar</span>
             </a>
         </li>
 
         <li class="">
-            <a href="#" data-active="false">
+            <a href="{{ url('users') }}" data-active="false">
                 <i class="zmdi zmdi-account"></i> <span>Usuarios</span>
             </a>
         </li>
@@ -57,7 +57,7 @@
         </li>
 
         <li class="">
-            <a href="#" data-active="false">
+            <a href="{{ url('cashout') }}" data-active="false">
                 <i class="zmdi zmdi-attachment"></i> <span>Arqueos</span>
             </a>
         </li>
