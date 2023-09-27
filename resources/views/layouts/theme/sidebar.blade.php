@@ -7,12 +7,13 @@
     </div>
     <ul class="sidebar-menu do-nicescrol">
         <li class="sidebar-header">MAIN NAVIGATION</li>
+        @can('Category_Index')
         <li class="">
             <a href="{{ url('categories') }}" data-active="true">
                 <i class="zmdi zmdi-view-dashboard"></i> <span>Categorías</span>
             </a>
         </li>
-
+        @endcan
         <li class="">
             <a href="{{ url('products') }}" data-active="false">
                 <i class="zmdi zmdi-playstation"></i> <span>Productos</span>
@@ -63,7 +64,7 @@
         </li>
 
         <li class="">
-            <a href="#" data-active="false">
+            <a href="{{ url('reports') }}" data-active="false">
                 <i class="zmdi zmdi-assignment"></i> <span>Reportes</span>
             </a>
         </li>

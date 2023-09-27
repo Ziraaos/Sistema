@@ -54,7 +54,7 @@
                                 </span>
                             </td>
                             <td>
-                                <a href="javascript:void(0)" wire:click="Edit('{{ $r->id }}')"
+                                <a href="javascript:void(0)" wire:click="edit('{{ $r->id }}')"
                                     class="btn btn-info" title="Edit">
                                     <i class="fas fa-edit"></i>
                                 </a>
