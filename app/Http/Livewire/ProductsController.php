@@ -86,14 +86,15 @@ class ProductsController extends Component
             'alerts' => $this->alerts,
             'category_id' => $this->categoryid,
         ]);
-
-        $customFilename;
+        dd($this->image);
         if($this->image){
             $customFilename = uniqid() . '_.' . $this->image->extension();
             $this->image->storeAs('public/products', $customFilename);
             $product->image = $customFilename;
+            dd($this->image);
             $product->save();
         }
+        dd($this->image);
 
         $this->resetUI(); // Limpiar las cajas de texto del formulario
         $this->emit('product-added','Producto Registrado');
@@ -147,8 +148,7 @@ class ProductsController extends Component
             'alerts' => $this->alerts,
             'category_id' => $this->categoryid,
         ]);
-
-        $customFilename;
+        dd($this->image);
         if($this->image){
             $customFilename = uniqid() . '_.' . $this->image->extension();
             $this->image->storeAs('public/products', $customFilename);
