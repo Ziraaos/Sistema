@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Product;
+use App\Traits\CartTrait;
 use Livewire\Component;
 use App\Models\Category;
 use Livewire\WithFileUploads;
@@ -12,14 +13,17 @@ class ProductsController extends Component
 {
     use WithPagination;
     use WithFileUploads;
+    use CartTrait;
 
     public $name, $barcode, $cost, $price, $stock, $alerts, $image, $categoryid, $search, $selected_id, $pageTitle, $componentName;
     private $pagination = 5;
     protected $paginationTheme = 'bootstrap';
 
-    /* public function paginationView(){
-        return 'vendor.livewire.bootstrap';
-    } */
+    public function ScanCode($code)
+	{
+		$this->ScanearCode($code);
+		$this->emit('global-msg', "SE AGREGÓ EL PRODUCTO AL CARRITO");
+	}
 
     public function mount(){
         $this->pageTitle = 'Listado';
@@ -86,15 +90,12 @@ class ProductsController extends Component
             'alerts' => $this->alerts,
             'category_id' => $this->categoryid,
         ]);
-        dd($this->image);
         if($this->image){
             $customFilename = uniqid() . '_.' . $this->image->extension();
             $this->image->storeAs('public/products', $customFilename);
             $product->image = $customFilename;
-            dd($this->image);
             $product->save();
         }
-        dd($this->image);
 
         $this->resetUI(); // Limpiar las cajas de texto del formulario
         $this->emit('product-added','Producto Registrado');
@@ -148,7 +149,6 @@ class ProductsController extends Component
             'alerts' => $this->alerts,
             'category_id' => $this->categoryid,
         ]);
-        dd($this->image);
         if($this->image){
             $customFilename = uniqid() . '_.' . $this->image->extension();
             $this->image->storeAs('public/products', $customFilename);

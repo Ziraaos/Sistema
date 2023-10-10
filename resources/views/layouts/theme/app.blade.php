@@ -32,8 +32,6 @@
 
                 <!--Start Dashboard Content-->
                 @yield('content')
-                <div class="card mt-3"></div>
-                <div class="row"></div>
                 <!--End Dashboard Content-->
 
                 <!--start overlay-->

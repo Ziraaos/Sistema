@@ -54,6 +54,8 @@
                             <a href="javascript:void(0)" onclick="Confirm('{{$product->id}}')" class="btn btn-danger" title="Delete">
                                 <i class="fas fa-trash"></i>
                             </a>
+                            <button type="button" wire:click.prevent="ScanCode('{{$product->barcode}}')" class="btn btn-dark"><i class="fas fa-shopping-cart"></i>
+                            </button>
                             {{-- @endif --}}
                         </td>
                     </tr>
@@ -94,6 +96,10 @@
         });
 
     })
+
+    function resetInputFile() {
+        $('input[type=file]').val('');
+    }
 
     function Confirm(id, products){
         if(products > 0){
