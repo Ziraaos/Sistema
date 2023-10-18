@@ -70,6 +70,24 @@
         </li>
 
         <li class="">
+            <a href="{{ url('services') }}" data-active="false">
+                <i class="zmdi zmdi-assignment"></i> <span>Servicios/Planes</span>
+            </a>
+        </li>
+
+        <li class="">
+            <a href="{{ url('discounts') }}" data-active="false">
+                <i class="zmdi zmdi-assignment"></i> <span>Descuentos de servicio</span>
+            </a>
+        </li>
+
+        <li class="">
+            <a href="{{ url('customers') }}" data-active="false">
+                <i class="zmdi zmdi-assignment"></i> <span>Clientes</span>
+            </a>
+        </li>
+
+        <li class="">
             <a href="#" target="_blank" data-active="false">
                 <i class="zmdi zmdi-lock"></i> <span>Login</span>
             </a>

@@ -14,6 +14,9 @@ use App\Http\Livewire\AsignarController;
 use App\Http\Livewire\CashoutController;
 use App\Http\Livewire\ReportsController;
 use App\Http\Controllers\ExportController;
+use App\Http\Livewire\CustomersController;
+use App\Http\Livewire\DiscountsController;
+use App\Http\Livewire\ServicesController;
 use App\Http\Livewire\UsersController;
 
 /*
@@ -36,6 +39,10 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/blank', [HomeController::class, 'test'])->name('test');
 
+Route::get('services', ServicesController::class);
+Route::get('discounts', DiscountsController::class);
+Route::get('customers', CustomersController::class);
+
 Route::middleware(['auth'])->group(function () {
     Route::get('categories', CategoriesController::class);
     Route::get('products', ProductsController::class);
@@ -51,6 +58,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('users', UsersController::class);
     Route::get('cashout', CashoutController::class);
     Route::get('reports', ReportsController::class);
+    /* Route::get('services', ServicesController::class); */
 
     //reportes PDF
     Route::get('report/pdf/{user}/{type}/{f1}/{f2}', [ExportController::class, 'reportPDF']);
