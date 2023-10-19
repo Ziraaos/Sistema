@@ -18,10 +18,7 @@ class CreateLocationsTable extends Migration
             $table->string('name', 255);
             $table->string('state', 255);
             $table->string('city', 255);
-            $table->string('note', 255);
-
-            $table->foreignId('customer_id')->constrained();
-
+            $table->string('note', 255)->nullable();
             $table->timestamps();
         });
     }

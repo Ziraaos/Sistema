@@ -18,6 +18,7 @@ class CreatePaymentDetailsTable extends Migration
 
             $table->decimal('price', 10,2);
             $table->decimal('quantity', 10,2);
+            $table->date('date_pay');
 
             $table->foreignId('service_id')->constrained();
             $table->foreignId('payment_id')->constrained();

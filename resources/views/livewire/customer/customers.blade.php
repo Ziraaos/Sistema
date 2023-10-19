@@ -28,9 +28,11 @@
                         <th scope="col">Apellidos</th>
                         <th scope="col">Email</th>
                         <th scope="col">Celular</th>
+                        <th scope="col">ubicación servicio</th>
                         <th scope="col">Descuento</th>
                         <th scope="col">Dirección</th>
                         <th scope="col">Imágen</th>
+                        <th scope="col">Estado</th>
                         <th scope="col">Acciones</th>
                     </tr>
                 </thead>
@@ -42,18 +44,25 @@
                             <td>{{ $customer->last_name }}</td>
                             <td>{{ $customer->email }}</td>
                             <td>{{ $customer->phone }}</td>
+                            <td>{{ $customer->location }}</td>
                             <td>
                                 <span
                                     class="badge {{ $customer->disc == 'YES' ? 'badge-success' : 'badge-danger' }} text-uppercase">{{ $customer->disc }}</span>
                             </td>
                             <td>
                                 {{-- {{ $customer->address }} --}}
-                                <a href="https://www.google.com/maps/search/?api=1&query={{ $customer->address }}&zoom=10" target="_blank"><img height="25px" src="assets/images/Google_Maps_icon.png"/></a>
+                                <a href="https://www.google.com/maps/search/?api=1&query={{ $customer->address }}&zoom=10"
+                                    target="_blank"><img height="25px" src="assets/images/Google_Maps_icon.png" /></a>
                             </td>
                             <td>
                                 <span>
-                                    <img src="{{ asset('storage/customers/' .$customer->image) }}" height="70" width="80" class="rounded" alt="no-image">
+                                    <img src="{{ asset('storage/customers/' . $customer->image) }}" height="70"
+                                        width="80" class="rounded" alt="no-image">
                                 </span>
+                            </td>
+                            <td>
+                                <span
+                                    class="badge {{ $customer->status == 'Active' ? 'badge-success' : 'badge-danger' }} text-uppercase">{{ $customer->status }}</span>
                             </td>
                             <td>
                                 {{-- @can('Service_Update') --}}
@@ -105,6 +114,10 @@
         });
     });
 
+    function resetInputFile() {
+        $('input[type=file]').val('');
+    }
+
     function Confirm(id, products) {
         if (products > 0) {
             swal('NO SE PUEDE ELIMINAR EL DESCUENTO PORQUE TIENE CLIENTES RELACIONADOS')
@@ -129,10 +142,11 @@
 </script>
 
 
-<script src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAP_KEY') }}&callback=iniciarMapa" async defer></script>
+<script src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAP_KEY') }}&callback=iniciarMapa" async defer>
+</script>
 
 <script>
-    function iniciarMapa(){
+    function iniciarMapa() {
         var latitud = -20.4867123;
         var longitud = -66.8700932;
         coordenadas = {
@@ -145,7 +159,7 @@
     }
 
     function generarMapa(coordenadas) {
-        var mapa = new google.maps.Map(document.getElementById('mapa'),{
+        var mapa = new google.maps.Map(document.getElementById('mapa'), {
             zoom: 12,
             center: new google.maps.LatLng(coordenadas.lat, coordenadas.lng)
         });
@@ -156,11 +170,9 @@
             position: new google.maps.LatLng(coordenadas.lat, coordenadas.lng)
         });
 
-        marcador.addListener('dragend', function(event){
+        marcador.addListener('dragend', function(event) {
             /* document.getElementById("address").value = this.getPosition().lat()+","+this.getPosition().lng(); */
-            @this.set('address', this.getPosition().lat()+","+this.getPosition().lng());
+            @this.set('address', this.getPosition().lat() + "," + this.getPosition().lng());
         });
     }
-
-
 </script>

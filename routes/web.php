@@ -16,6 +16,8 @@ use App\Http\Livewire\ReportsController;
 use App\Http\Controllers\ExportController;
 use App\Http\Livewire\CustomersController;
 use App\Http\Livewire\DiscountsController;
+use App\Http\Livewire\LocationsController;
+use App\Http\Livewire\PaymentsController;
 use App\Http\Livewire\ServicesController;
 use App\Http\Livewire\UsersController;
 
@@ -41,7 +43,9 @@ Route::get('/blank', [HomeController::class, 'test'])->name('test');
 
 Route::get('services', ServicesController::class);
 Route::get('discounts', DiscountsController::class);
+Route::get('locations', LocationsController::class);
 Route::get('customers', CustomersController::class);
+Route::get('payments', PaymentsController::class);
 
 Route::middleware(['auth'])->group(function () {
     Route::get('categories', CategoriesController::class);

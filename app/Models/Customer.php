@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Location;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -16,8 +17,15 @@ class Customer extends Model
         'phone',
         'disc',
         'address',
-        'image'
+        'image',
+        'status',
+        'location_id'
     ];
+
+    public function location()
+    {
+        return $this->belongTo(Location::class);
+    }
 
     public function getImagenAttribute(){
         if (!is_null($this->image)) {

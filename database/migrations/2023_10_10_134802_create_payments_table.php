@@ -16,9 +16,10 @@ class CreatePaymentsTable extends Migration
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
             $table->decimal('total', 10,2);
-            $table->integer('items');
-            $table->decimal('cash', 10,2);
-            $table->decimal('change', 10,2);
+            $table->integer('items')->nullable();
+            $table->decimal('cash', 10,2)->nullable();
+            $table->decimal('change', 10,2)->nullable();
+            $table->date('date_serv');
             $table->enum('status',['PAID','PENDING','CANCELLED'])->default('PENDING');
 
             /* $table->unsignedBigInteger('user_id');

@@ -12,6 +12,7 @@ class PaymentDetail extends Model
     protected $fillable = [
         'price',
         'quantity',
+        'date_pay',
         'payment_id',
         'service_id'
     ];

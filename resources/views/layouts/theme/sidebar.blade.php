@@ -82,8 +82,20 @@
         </li>
 
         <li class="">
+            <a href="{{ url('locations') }}" data-active="false">
+                <i class="zmdi zmdi-assignment"></i> <span>Ubicaión servicios</span>
+            </a>
+        </li>
+
+        <li class="">
             <a href="{{ url('customers') }}" data-active="false">
                 <i class="zmdi zmdi-assignment"></i> <span>Clientes</span>
+            </a>
+        </li>
+
+        <li class="">
+            <a href="{{ url('payments') }}" data-active="false">
+                <i class="zmdi zmdi-assignment"></i> <span>Pagos de servicios</span>
             </a>
         </li>
 

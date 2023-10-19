@@ -22,6 +22,10 @@ class CreateCustomersTable extends Migration
             $table->enum('disc',['NO','YES'])->default('NO');
             $table->string('address', 255);
             $table->string('image', 100)->nullable();
+            $table->enum('status',['Active','Inactive'])->default('Active');
+
+            $table->foreignId('location_id')->constrained();
+
             $table->timestamps();
         });
     }

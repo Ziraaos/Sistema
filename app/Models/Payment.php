@@ -14,6 +14,7 @@ class Payment extends Model
         'items',
         'cash',
         'change',
+        'date_serv',
         'status',
         'user_id',
         'customer_id'
