@@ -28,6 +28,8 @@
 <link href="{{ asset('css/custom.css') }}" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/widgets/modules-widgets.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/forms/theme-checkbox-radio.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('css/lightbox.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('css/apexcharts.css') }}">
 
 {{-- por agregar para cuadro pos --}}
 {{-- <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/apps/scrumboard.css') }}">

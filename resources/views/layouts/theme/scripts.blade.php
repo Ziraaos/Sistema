@@ -29,6 +29,8 @@
 <script src="{{ asset('plugins/notification/snackbar/snackbar.min.js') }}"></script>
 <script src="{{ asset('plugins/nicescroll/nicescroll.js') }}"></script>
 <script src="{{ asset('plugins/currency/currency.js') }}"></script>
+<script src="{{ asset('js/lightbox.js') }}"></script>
+<script src="{{ asset('js/apexcharts.js') }}"></script>
 
 <script>
     function noty(msg, option = 1)

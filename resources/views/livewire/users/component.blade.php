@@ -48,7 +48,7 @@
                             <td>
                                 <span>
                                     @if ($r->image != null)
-                                        <img class="card-img-top img-fluid"
+                                        <img
                                             src="{{ asset('storage/users/' . $r->image) }}" height="70" width="80" class="rounded">
                                     @endif
                                 </span>

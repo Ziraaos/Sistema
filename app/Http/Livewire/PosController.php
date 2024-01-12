@@ -47,7 +47,9 @@ class PosController extends Component
         'scan-code' => 'ScanCode',
         'removeItem' => 'removeItem',
         'clearCart' => 'clearCart',
-        'saveSale' => 'saveSale'
+        'saveSale' => 'saveSale',
+        'refresh' => '$refresh',
+        'scan-code-byid' => 'ScanCodeById'
     ];
 
     public function ScanCodeById(Product $product)

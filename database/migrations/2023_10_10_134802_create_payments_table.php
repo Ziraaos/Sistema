@@ -17,7 +17,7 @@ class CreatePaymentsTable extends Migration
             $table->id();
             $table->decimal('total', 10,2);
             $table->integer('items')->nullable();
-            $table->decimal('cash', 10,2)->nullable();
+            $table->decimal('debt', 10,2)->nullable();
             $table->decimal('change', 10,2)->nullable();
             $table->date('date_serv');
             $table->enum('status',['PAID','PENDING','CANCELLED'])->default('PENDING');

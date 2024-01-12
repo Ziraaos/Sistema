@@ -11,7 +11,7 @@
                         <div class="col-sm-12">
                             <h6>Elige la ubicación</h6>
                             <div class="form-group">
-                                <select wire:model="locationId" class="form-control">
+                                <select wire:model="locationid" class="form-control">
                                     <option value="0">Todos</option>
                                     @foreach ($locations as $location)
                                         <option value="{{ $location->id }}">{{ $location->name }}</option>
@@ -40,18 +40,6 @@
                                 Consultar
                             </button>
 
-                            {{-- <a class="btn btn-dark btn-block {{ count($data) < 1 ? 'disabled' : '' }}"
-                                href="{{ url('report/pdf' . '/' . $userId . '/' . $reportType . '/' . $dateFrom . '/' . $dateTo) }}"
-                                target="_blank">Generar PDF</a>
-
-                            <a class="btn btn-dark btn-block {{ count($data) < 1 ? 'disabled' : '' }}"
-                                href="{{ url('report/excel' . '/' . $userId . '/' . $reportType . '/' . $dateFrom . '/' . $dateTo) }}"
-                                target="_blank">Exportar a Excel</a> --}}
-
-                            <li>
-                                <a href="javascript:void(0)" class="btn btn-dark" data-toggle="modal"
-                                    data-target="#theModal">Generar pagos por mes</a>
-                            </li>
                         </div>
                     </div>
                 </div>
@@ -64,7 +52,7 @@
                                     <th class="text-center">#</th>
                                     <th class="text-center">Nombres</th>
                                     <th class="text-center">Apellidos</th>
-                                    <th class="text-center">Items</th>
+                                    <th class="text-center">Total</th>
                                     <th class="text-center">Estado</th>
                                     <th class="text-center">Lugar</th>
                                     <th class="text-center">Mes</th>
@@ -92,10 +80,19 @@
                                             <h6>{{ $d->last_name }}</h6>
                                         </td>
                                         <td class="text-center">
-                                            <h6>{{ $d->items }}</h6>
+                                            <h6>{{ $d->total }}</h6>
                                         </td>
                                         <td class="text-center">
-                                            <span class="badge {{ $d->status == 'PAID' ? 'badge-success' : 'badge-danger' }} text-uppercase">{{ $d->status }}</span>
+                                            <span
+                                                class="badge {{ $d->status == 'PAID' ? 'badge-success' : 'badge-danger' }} text-uppercase">
+                                                @if ($d->status == 'PAID')
+                                                    PAGADO
+                                                @elseif ($d->status == 'PENDING')
+                                                    PENDIENTE
+                                                @else
+                                                    {{ $d->status }}
+                                                @endif
+                                            </span>
                                         </td>
                                         <td class="text-center">
                                             <h6>{{ $d->name }}</h6>
@@ -106,14 +103,17 @@
                                             </h6>
                                         </td>
                                         <td class="text-center">
+                                            <button type="button" wire:click.prevent="Paid('{{ $d->id }}')"
+                                                class="btn btn-dark"><i class="fas fa-money"></i>
+                                            </button>
                                             <button wire:click.prevent="getDetails({{ $d->id }})"
-                                                class="btn btn-dark btn-sm">
+                                                class="btn btn-dark">
                                                 <i class="fas fa-list"></i>
                                             </button>
-                                            <button type="button" onclick="rePrint({{ $d->id }})"
-                                                class="btn btn-dark btn-sm">
+                                            {{-- <button type="button" onclick="rePrint({{ $d->id }})"
+                                                class="btn btn-dark">
                                                 <i class="fas fa-print"></i>
-                                            </button>
+                                            </button> --}}
                                         </td>
                                     </tr>
                                 @endforeach
@@ -124,13 +124,23 @@
             </div>
         </div>
     </div>
+    @include('livewire.payment.paid-form')
     @include('livewire.payment.payment-detail')
     @include('livewire.payment.form')
 </div>
-
+<div class="col-sm-12">
+    <li>
+        <a href="javascript:void(0)" class="btn btn-dark" data-toggle="modal" data-target="#theModal">Generar pagos por
+            mes</a>
+    </li>
+</div>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         window.livewire.on('payment-added', msg => {
+            $('#theModal').modal('hide');
+            noty(msg)
+        });
+        window.livewire.on('payment-not-added', msg => {
             $('#theModal').modal('hide');
             noty(msg)
         });
@@ -151,14 +161,28 @@
             $('.er').css('display', 'none');
         });
 
+        function resetInputFile() {
+            $('input[type=file]').val('');
+        }
 
         //eventos
-        window.livewire.on('show-modal', Msg => {
+        window.livewire.on('show-modal-detail', Msg => {
             $('#modalDetails').modal('show')
         })
+
+        //paids
+        window.livewire.on('show-modal-paid', Msg => {
+            $('#modalPaids').modal('show')
+        })
+        window.livewire.on('hide-modal-paid', msg => {
+            $('#modalPaids').modal('hide');
+            noty(msg)
+        });
     })
 
     function rePrint(saleId) {
         window.open("print://" + saleId, '_self').close()
     }
 </script>
+{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css" rel="stylesheet"> --}}

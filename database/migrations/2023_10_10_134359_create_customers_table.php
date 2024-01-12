@@ -25,6 +25,7 @@ class CreateCustomersTable extends Migration
             $table->enum('status',['Active','Inactive'])->default('Active');
 
             $table->foreignId('location_id')->constrained();
+            $table->foreignId('service_id')->constrained();
 
             $table->timestamps();
         });

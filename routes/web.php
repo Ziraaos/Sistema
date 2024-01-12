@@ -15,9 +15,12 @@ use App\Http\Livewire\CashoutController;
 use App\Http\Livewire\ReportsController;
 use App\Http\Controllers\ExportController;
 use App\Http\Livewire\CustomersController;
+use App\Http\Livewire\DashController;
 use App\Http\Livewire\DiscountsController;
 use App\Http\Livewire\LocationsController;
+use App\Http\Livewire\MethodsController;
 use App\Http\Livewire\PaymentsController;
+use App\Http\Livewire\ProfileController;
 use App\Http\Livewire\ServicesController;
 use App\Http\Livewire\UsersController;
 
@@ -33,25 +36,28 @@ use App\Http\Livewire\UsersController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/blank', [HomeController::class, 'test'])->name('test');
+/* Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home'); */
+Route::get('/home', DashController::class);
+/* Route::get('/blank', [HomeController::class, 'test'])->name('test'); */
 
-Route::get('services', ServicesController::class);
-Route::get('discounts', DiscountsController::class);
-Route::get('locations', LocationsController::class);
-Route::get('customers', CustomersController::class);
-Route::get('payments', PaymentsController::class);
 
 Route::middleware(['auth'])->group(function () {
     Route::get('categories', CategoriesController::class);
     Route::get('products', ProductsController::class);
     Route::get('coins', CoinsController::class);
     Route::get('pos', PosController::class);
+    Route::get('profile', ProfileController::class);
+    Route::get('services', ServicesController::class);
+    Route::get('discounts', DiscountsController::class);
+    Route::get('locations', LocationsController::class);
+    Route::get('customers', CustomersController::class);
+    Route::get('methods', MethodsController::class);
+    Route::get('payments', PaymentsController::class);
 
     Route::group(['middleware' => ['role:Admin']], function () {
         Route::get('roles', RolesController::class);

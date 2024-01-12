@@ -29,6 +29,7 @@
                         <th scope="col">Email</th>
                         <th scope="col">Celular</th>
                         <th scope="col">ubicación servicio</th>
+                        <th scope="col">Servicio / Plan</th>
                         <th scope="col">Descuento</th>
                         <th scope="col">Dirección</th>
                         <th scope="col">Imágen</th>
@@ -45,6 +46,7 @@
                             <td>{{ $customer->email }}</td>
                             <td>{{ $customer->phone }}</td>
                             <td>{{ $customer->location }}</td>
+                            <td>{{ $customer->service }}</td>
                             <td>
                                 <span
                                     class="badge {{ $customer->disc == 'YES' ? 'badge-success' : 'badge-danger' }} text-uppercase">{{ $customer->disc }}</span>

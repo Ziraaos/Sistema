@@ -5,7 +5,7 @@
         <div class="form-group">
             <label>Lugar</label>
             <select wire:model='locationId' class="form-control">
-                <option value="Elegir" disabled>Elegir</option>
+                <option value="Elegir">Elegir</option>
                 @foreach ($locations as $location)
                     <option value="{{ $location->id }}">{{ $location->name }}</option>
                 @endforeach

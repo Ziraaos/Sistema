@@ -52,6 +52,18 @@
     </div>
     <div class="col-sm-12 col-md-6">
         <div class="form-group">
+            <label>Servicio / Plan</label>
+            <select wire:model='serviceid' class="form-control">
+                <option value="Elegir" disabled>Elegir</option>
+                @foreach ($services as $service)
+                    <option value="{{ $service->id }}">{{ $service->name }}</option>
+                @endforeach
+            </select>
+            @error('serviceid') <span class="text-danger er">{{ $message }}</span> @enderror
+        </div>
+    </div>
+    <div class="col-sm-12 col-md-6">
+        <div class="form-group">
             <label>Descuento</label>
             <select wire:model.lazy="disc" class="form-control">
                 <option value="Elegir" selected>Elegir</option>
@@ -76,11 +88,11 @@
     <div class="col-sm-12 col-md-6">
         <div class="form-group">
             <label>Estado</label>
-            <select wire:model.lazy="disc" class="form-control">
+            <select wire:model="status" class="form-control">
                 <option value="Active" selected>Activo</option>
                 <option value="Inactive">Inactivo</option>
             </select>
-            @error('disc')
+            @error('status')
                 <span class="text-danger er">{{ $message }}</span>
             @enderror
         </div>

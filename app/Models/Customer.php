@@ -19,12 +19,13 @@ class Customer extends Model
         'address',
         'image',
         'status',
-        'location_id'
+        'location_id',
+        'service_id'
     ];
 
     public function location()
     {
-        return $this->belongTo(Location::class);
+        return $this->belongsTo(Location::class);
     }
 
     public function getImagenAttribute(){

@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\Customer;
 use App\Models\Location;
+use App\Models\Service;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
@@ -13,7 +14,7 @@ class CustomersController extends Component
     use WithPagination;
     use WithFileUploads;
 
-    public $first_name, $last_name, $email, $phone, $disc, $address, $image, $status, $locationid, $search, $selected_id, $pageTitle, $componentName;
+    public $first_name, $last_name, $email, $phone, $disc, $address, $image, $status, $locationid, $serviceid, $search, $selected_id, $pageTitle, $componentName;
     private $pagination = 5;
     protected $paginationTheme = 'bootstrap';
 
@@ -22,13 +23,16 @@ class CustomersController extends Component
         $this->pageTitle = 'Listado';
         $this->componentName = 'Clientes';
         $this->locationid = 'Elegir';
+        $this->serviceid = 'Elegir';
+        $this->status = 'Active';
     }
 
     public function render()
     {
         if (strlen($this->search) > 0) {
             $data = Customer::join('locations as l', 'l.id', 'customers.location_id')
-                ->select('customers.*', 'l.name as location')
+                ->join('services as s', 's.id', 'customers.service_id')
+                ->select('customers.*', 'l.name as location', 's.name as service')
                 ->where('customers.first_name', 'like', '%' . $this->search . '%')
                 ->orWhere('customers.last_name', 'like', '%' . $this->search . '%')
                 ->orWhere('l.name', 'like', '%' . $this->search . '%')
@@ -36,14 +40,16 @@ class CustomersController extends Component
                 ->paginate($this->pagination);
         } else {
             $data = Customer::join('locations as l', 'l.id', 'customers.location_id')
-                ->select('customers.*', 'l.name as location')
+                ->join('services as s', 's.id', 'customers.service_id')
+                ->select('customers.*', 'l.name as location', 's.name as service')
                 ->orderBy('customers.first_name', 'asc')
                 ->paginate($this->pagination);
         }
 
         return view('livewire.customer.customers', [
             'customers' => $data,
-            'locations' => Location::orderBy('name', 'asc')->get()])
+            'locations' => Location::orderBy('name', 'asc')->get(),
+            'services' => Service::orderBy('name', 'asc')->get()])
             ->extends('layouts.theme.app')
             ->section('content');
     }
@@ -60,6 +66,7 @@ class CustomersController extends Component
         $this->status = $customer->status;
         $this->image = null;
         $this->locationid = $customer->location_id;
+        $this->serviceid = $customer->service_id;
 
         $this->emit('show-modal', 'show modal!');
     }
@@ -95,6 +102,7 @@ class CustomersController extends Component
             'address' => $this->address,
             'status' => $this->status,
             'location_id' => $this->locationid,
+            'service_id' => $this->serviceid,
         ]);
 
         if ($this->image) {
@@ -141,6 +149,7 @@ class CustomersController extends Component
             'address' => $this->address,
             'status' => $this->status,
             'location_id' => $this->locationid,
+            'service_id' => $this->serviceid,
         ]);
 
         if ($this->image) {
@@ -195,6 +204,7 @@ class CustomersController extends Component
         $this->address = '';
         $this->image = null;
         $this->locationid = 'Elegir';
+        $this->serviceid = 'Elegir';
         $this->status = 'Active';
         $this->selected_id = 0;
     }

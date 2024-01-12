@@ -14,6 +14,7 @@
             @include('livewire.pos.partials.coins')
         </div>
     </div>
+    <livewire:modal-search />
 </div>
 
 <script src="{{ asset('js/keypress.js') }}"></script>

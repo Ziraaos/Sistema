@@ -17,11 +17,13 @@ class CreatePaymentDetailsTable extends Migration
             $table->id();
 
             $table->decimal('price', 10,2);
-            $table->decimal('quantity', 10,2);
-            $table->date('date_pay');
+            $table->decimal('quantity', 10,2)->nullable();
+            $table->datetime('date_pay');
+            $table->string('image', 100)->nullable();
 
-            $table->foreignId('service_id')->constrained();
-            $table->foreignId('payment_id')->constrained();
+            $table->foreignId('customer_id')->constrained();
+            $table->foreignId('user_id')->constrained();
+            $table->foreignId('payment_method_id')->constrained();
 
             $table->timestamps();
         });

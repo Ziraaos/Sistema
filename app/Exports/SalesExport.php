@@ -25,7 +25,7 @@ class SalesExport implements FromCollection, WithHeadings, WithCustomStartCell, 
         $this->dateTo = $f2;
     }
 
-   
+
     public function collection()
     {
         $data =[];
@@ -39,9 +39,9 @@ class SalesExport implements FromCollection, WithHeadings, WithCustomStartCell, 
         }
 
 
-        if($this->userId == 0) 
+        if($this->userId == 0)
         {
-            $data = Sale::join('users as u','u.id','sales.user_id')
+            $data = Sale::('users as u','u.id','sales.user_id')
             ->select('sales.id','sales.total','sales.items','sales.status','u.name as user','sales.created_at')
             ->whereBetween('sales.created_at', [$from, $to])
             ->get();
