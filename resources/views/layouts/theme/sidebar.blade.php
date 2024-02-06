@@ -6,7 +6,7 @@
         </a>
     </div>
     <ul class="sidebar-menu do-nicescrol">
-        <li class="sidebar-header">MAIN NAVIGATION</li>
+        <li class="sidebar-header">VENTAS</li>
         @can('Category_Index')
         <li class="">
             <a href="{{ url('categories') }}" data-active="true">
@@ -27,6 +27,20 @@
         </li>
 
         <li class="">
+            <a href="{{ url('coins') }}" data-active="false">
+                <i class="zmdi zmdi-face"></i> <span>Monedas</span>
+            </a>
+        </li>
+
+        <li class="">
+            <a href="{{ url('cashout') }}" data-active="false">
+                <i class="zmdi zmdi-attachment"></i> <span>Arqueos</span>
+            </a>
+        </li>
+
+        <li class="sidebar-header">ROLES</li>
+
+        <li class="">
             <a href="{{ url('roles') }}" data-active="false">
                 <i class="zmdi zmdi-grid"></i> <span>Roles</span>
             </a>
@@ -45,41 +59,21 @@
             </a>
         </li>
 
+        <li class="sidebar-header">USUARIOS</li>
+
         <li class="">
             <a href="{{ url('users') }}" data-active="false">
                 <i class="zmdi zmdi-accounts"></i> <span>Usuarios</span>
             </a>
         </li>
 
-        <li class="">
-            <a href="{{ url('coins') }}" data-active="false">
-                <i class="zmdi zmdi-face"></i> <span>Monedas</span>
-            </a>
-        </li>
-
-        <li class="">
-            <a href="{{ url('cashout') }}" data-active="false">
-                <i class="zmdi zmdi-attachment"></i> <span>Arqueos</span>
-            </a>
-        </li>
-
-        <li class="">
-            <a href="{{ url('reports') }}" data-active="false">
-                <i class="zmdi zmdi-assignment"></i> <span>Reportes</span>
-            </a>
-        </li>
+        <li class="sidebar-header">SERVICIOS</li>
 
         <li class="">
             <a href="{{ url('services') }}" data-active="false">
                 <i class="zmdi zmdi-collection-bookmark"></i> <span>Servicios/Planes</span>
             </a>
         </li>
-
-        {{-- <li class="">
-            <a href="{{ url('discounts') }}" data-active="false">
-                <i class="zmdi zmdi-window-minimize"></i> <span>Descuentos de servicio</span>
-            </a>
-        </li> --}}
 
         <li class="">
             <a href="{{ url('locations') }}" data-active="false">
@@ -104,6 +98,22 @@
                 <i class="zmdi zmdi-money"></i> <span>Pagos de servicios</span>
             </a>
         </li>
+
+        <li class="sidebar-header">REPORTES</li>
+
+        <li class="">
+            <a href="{{ url('reportService') }}" data-active="false">
+                <i class="zmdi zmdi-assignment"></i> <span>Reportes Servicios</span>
+            </a>
+        </li>
+
+        <li class="">
+            <a href="{{ url('reports') }}" data-active="false">
+                <i class="zmdi zmdi-assignment"></i> <span>Reportes Ventas</span>
+            </a>
+        </li>
+
     </ul>
 
 </div>
+

@@ -87,19 +87,18 @@ class PaymentsController extends Component
                 'payments.date_serv',
                 'latest_payment.status as status'
             )
-            ->addSelect(DB::raw('SUM(payments.total) as total'))
-            ->leftJoin('payments', 'customers.id', '=', 'payments.customer_id')
-            ->leftJoin('locations', 'customers.location_id', '=', 'locations.id')
-            ->leftJoin(DB::raw('(SELECT customer_id, MAX(status) as status FROM payments GROUP BY customer_id) as latest_payment'), 'customers.id', '=', 'latest_payment.customer_id')
-            ->groupBy('customers.id', 'customers.first_name', 'customers.last_name', 'payments.date_serv', 'latest_payment.status')
-            ->whereMonth('payments.date_serv', '=', $month)
-            ->whereYear('payments.date_serv', '=', $year)
-            ->get();
+                ->addSelect(DB::raw('SUM(payments.total) as total'))
+                ->leftJoin('payments', 'customers.id', '=', 'payments.customer_id')
+                ->leftJoin('locations', 'customers.location_id', '=', 'locations.id')
+                ->leftJoin(DB::raw('(SELECT customer_id, MAX(status) as status FROM payments GROUP BY customer_id) as latest_payment'), 'customers.id', '=', 'latest_payment.customer_id')
+                ->groupBy('customers.id', 'customers.first_name', 'customers.last_name', 'payments.date_serv', 'latest_payment.status')
+                ->whereMonth('payments.date_serv', '=', $month)
+                ->whereYear('payments.date_serv', '=', $year)
+                ->get();
         }
         /* elseif ($this->locationid == 0 && $this->reportType == 1) {
             # code...
-        } */
-        else {
+        } */ else {
             $this->data = Customer::select(
                 'customers.id',
                 'customers.first_name',
@@ -140,7 +139,7 @@ class PaymentsController extends Component
             ->where('customer_id', $customerId)
             ->get();
 
-        $this->namec = $customer->first_name.' '.$customer->last_name;
+        $this->namec = $customer->first_name . ' ' . $customer->last_name;
         $this->localidad = $customer->location->name;
         $suma = $this->details->sum(function ($item) {
             return $item->total;
@@ -164,7 +163,7 @@ class PaymentsController extends Component
         $this->debtData = [];
 
         foreach ($payments as $payment) {
-            if ($payment->total != 0 || $payment->change !=0) {
+            if ($payment->total != 0 || $payment->change != 0) {
                 $this->debtData[] = [
                     'mes' => $payment->date_serv,
                     'monto' => $payment->total,
@@ -175,8 +174,7 @@ class PaymentsController extends Component
                     $this->otid = $payment->id;
                 }
             }
-            $this->namec = $payment->first_name.' '.$payment->last_name;
-
+            $this->namec = $payment->first_name . ' ' . $payment->last_name;
         }
         $this->amountPaid = $this->lastPayment;
 
@@ -217,47 +215,49 @@ class PaymentsController extends Component
                 $customFileName = uniqid() . '_.' . $this->image->extension();
                 $this->image->storeAs('public/payments', $customFileName);
                 $paymentDetail->image = $customFileName;
-                $paymentDetail->save();
+
             }
+            $paymentDetail->save();
+            // Actualiza el campo `cash` y el estado `status` en la tabla `payments`
+            if ($this->lastPayment > 0) {
+                /* dd($totalPayment, $this->ttotal, $this->otid); */
+                Payment::where('id', $this->otid)
+                    ->update(['change' => 0]);
+            }
+            // Realiza modificaciones en la tabla `payments`
+            foreach ($this->debtData as $debt) {
+                if ($totalPayment <= $debt['monto']) {
+                    $debtPayment = $totalPayment;
+                    $totalPayment = 0;
+                } else {
+                    $debtPayment = $debt['monto'];
+                    $totalPayment -= $debtPayment;
+                }
+
+
+                Payment::where('customer_id', $this->clientId)
+                    ->whereRaw('YEAR(date_serv) = YEAR(?) AND MONTH(date_serv) = MONTH(?)', [$debt['mes'], $debt['mes']])
+                    ->update([
+                        'total' => \DB::raw('total - ' . $debtPayment),
+                    ]);
+
+                // Si el monto pagado cubre la deuda, actualiza el estado a 'PAID'
+                if ($debtPayment >= $debt['monto']) {
+                    Payment::where('customer_id', $this->clientId)
+                        ->whereRaw('YEAR(date_serv) = YEAR(?) AND MONTH(date_serv) = MONTH(?)', [$debt['mes'], $debt['mes']])
+                        ->update(['status' => 'PAID']);
+                }
+            }
+            Payment::where('customer_id', $this->clientId)
+                ->whereRaw('YEAR(date_serv) = YEAR(?) AND MONTH(date_serv) = MONTH(?)', [$debt['mes'], $debt['mes']])
+                ->update([
+                    'change' => $totalPayment,
+                ]);
         } else {
             $this->emit('hide-modal-paid', 'No se puede realizar el pago');
             return;
         }
-        // Actualiza el campo `cash` y el estado `status` en la tabla `payments`
-        if ($this->lastPayment > 0) {
-            /* dd($totalPayment, $this->ttotal, $this->otid); */
-            Payment::where('id', $this->otid)
-                ->update(['change' => 0]);
-        }
-        // Realiza modificaciones en la tabla `payments`
-        foreach ($this->debtData as $debt) {
-            if ($totalPayment <= $debt['monto']) {
-                $debtPayment = $totalPayment;
-                $totalPayment = 0;
-            } else {
-                $debtPayment = $debt['monto'];
-                $totalPayment -= $debtPayment;
-            }
 
-
-            Payment::where('customer_id', $this->clientId)
-                ->whereRaw('YEAR(date_serv) = YEAR(?) AND MONTH(date_serv) = MONTH(?)', [$debt['mes'], $debt['mes']])
-                ->update([
-                    'total' => \DB::raw('total - ' . $debtPayment),
-                ]);
-
-            // Si el monto pagado cubre la deuda, actualiza el estado a 'PAID'
-            if ($debtPayment >= $debt['monto']) {
-                Payment::where('customer_id', $this->clientId)
-                    ->whereRaw('YEAR(date_serv) = YEAR(?) AND MONTH(date_serv) = MONTH(?)', [$debt['mes'], $debt['mes']])
-                    ->update(['status' => 'PAID']);
-            }
-        }
-        Payment::where('customer_id', $this->clientId)
-            ->whereRaw('YEAR(date_serv) = YEAR(?) AND MONTH(date_serv) = MONTH(?)', [$debt['mes'], $debt['mes']])
-            ->update([
-                'change' => $totalPayment,
-            ]);
 
         $this->resetUI(); // Limpiar las cajas de texto del formulario
         $this->emit('hide-modal-paid', 'Pago guardado');

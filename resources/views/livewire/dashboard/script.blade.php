@@ -1,5 +1,84 @@
 <script>
     document.addEventListener('livewire:load', function() {
+
+        //-------------------------------------------------------------------------------------//
+        //                        PAYMENTS BY MONTH
+        // ------------------------------------------------------------------------------------//
+        var options = {
+            series: [{
+                name: 'pagos del mes',
+                data: @this.paymentsByMonth_Data
+            }],
+            chart: {
+                height: 350,
+                type: 'line',
+            },
+            forecastDataPoints: {
+                count: 7
+            },
+            stroke: {
+                width: 5,
+                curve: 'smooth'
+            },
+
+            xaxis: {
+                categories: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov",
+                    "Dic"
+                ],
+                tickAmount: 12,
+                position: 'top',
+                axisBorder: {
+                    show: false
+                },
+                axisTicks: {
+                    show: false
+                },
+                crosshairs: {
+                    fill: {
+                        type: 'gradient',
+                        gradient: {
+                            shade: 'dark',
+                            colorFrom: '#D8E3F0',
+                            colorTo: '#BED1E6',
+                            stops: [0, 100],
+                            opacityFrom: 0.4,
+                            opacityTo: 0.5,
+                        }
+                    }
+                },
+                tooltip: {
+                    enabled: true,
+                }
+            },
+            yaxis: {
+                axisBorder: {
+                    show: false
+                },
+                axisTicks: {
+                    show: false,
+                },
+                labels: {
+                    show: false,
+                    formatter: function(val) {
+                        return 'Bs.' + val;
+                    }
+                }
+
+            },
+            title: {
+                text: totalYearPayments(),
+                floating: true,
+                offsetY: 330,
+                align: 'center',
+                style: {
+                    color: '#fff'
+                }
+            }
+        };
+
+        var chart = new ApexCharts(document.querySelector("#chartPaymentMonth"), options);
+        chart.render();
+
         //-------------------------------------------------------------------------------------//
         //                        SALES BY MONTH
         // ------------------------------------------------------------------------------------//
@@ -33,7 +112,9 @@
             },
 
             xaxis: {
-                categories: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
+                categories: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov",
+                    "Dic"
+                ],
                 position: 'top',
                 axisBorder: {
                     show: false
@@ -197,6 +278,40 @@
 
             return 'Total: Bs.' + total.toFixed(2)
         }
+
+        //---------------------------------------------------------------//
+        // suma total de pagos durante el año actual
+        //---------------------------------------------------------------//
+        function totalYearPayments() {
+            var total = 0
+            @this.paymentsByMonth_Data.forEach(item => {
+                total += parseFloat(item)
+            })
+
+            return 'Total: Bs.' + total.toFixed(2)
+        }
+
+    })
+</script>
+<script>
+    /* window.onload = function() {
+        Swal.fire({
+            title: "The Internet?",
+            text: "That thing is still around?",
+            icon: "question"
+        });
+    } */
+
+    document.addEventListener('DOMContentLoaded', function() {
+        //events
+
+        window.livewire.on('payment-reminder', msg => {
+            Swal.fire({
+                title: 'titulo',
+                text: 'text',
+                icon: 'question'
+            });
+        });
 
     })
 </script>

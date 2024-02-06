@@ -63,7 +63,7 @@ class UsersController extends Component
         $this->selected_id = $user->id;
         $this->name = $user->name;
         $this->phone = $user->phone;
-        $this->profile = $this->profile;
+        $this->profile = $user->profile;
         $this->status = $user->status;
         $this->email = $user->email;
         $this->password = '';
@@ -104,6 +104,7 @@ class UsersController extends Component
 
         $this->validate($rules, $messages);
 
+
         $user = User::create([
             'name' => $this->name,
             'email' => $this->email,
@@ -113,7 +114,7 @@ class UsersController extends Component
             'password' => bcrypt($this->password)
         ]);
 
-        $user->syncRoles($this->profile);
+        $user->syncRoles($this->profile);  /* Sincroniza los roles */
 
         if ($this->image) {
             $customFileName = uniqid() . '_.' . $this->image->extension();

@@ -21,6 +21,7 @@ use App\Http\Livewire\LocationsController;
 use App\Http\Livewire\MethodsController;
 use App\Http\Livewire\PaymentsController;
 use App\Http\Livewire\ProfileController;
+use App\Http\Livewire\ReportServiceController;
 use App\Http\Livewire\ServicesController;
 use App\Http\Livewire\UsersController;
 
@@ -68,6 +69,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('users', UsersController::class);
     Route::get('cashout', CashoutController::class);
     Route::get('reports', ReportsController::class);
+    Route::get('reportService', ReportServiceController::class);
     /* Route::get('services', ServicesController::class); */
 
     //reportes PDF
