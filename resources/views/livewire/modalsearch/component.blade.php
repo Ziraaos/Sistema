@@ -1,7 +1,7 @@
     <div wire:ignore.self class="modal fade modal-fullscreen" id="modalSearchProduct" tabindex="-1">
         <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
+            <div class="modal-content card">
+                <div class="modal-header bg-primary bg-gradient">
 
                     <div class="input-group">
                         <input type="text" wire:model="search" id="modal-search-input" placeholder="Puedes buscar por nombre del producto, código ó categoría..." class="form-control">
@@ -13,7 +13,7 @@
                     </div>
 
                 </div>
-                <div class="modal-body">
+                <div class="modal-body bg-gradient" style="background-color:#6f42c1"">
                     <div class="row p-2">
                         <div class="table-responsive">
                             <table class="table table-bordered table-striped mt-1">
@@ -24,10 +24,12 @@
                                         <th width="13%" class="table-th text-center text-white">PRECIO</th>
                                         <th class="table-th text-center text-white">CATEGORÍA</th>
                                         <th class="table-th text-center text-white">
-                                            <button wire:click.prevent="addAll" class="btn btn-info" {{count($products) > 0 ? '' : 'disabled' }}>
-                                                <i class="fas fa-check"></i>
-                                                TODOS
-                                            </button>
+                                            @can('Products_Shop')
+                                                <button wire:click.prevent="addAll" class="btn btn-info" {{count($products) > 0 ? '' : 'disabled' }}>
+                                                    <i class="fas fa-check"></i>
+                                                    TODOS
+                                                </button>
+                                            @endcan
                                         </th>
                                     </tr>
                                 </thead>
@@ -36,7 +38,7 @@
                                     <tr>
                                         <td>
                                             <span>
-                                                <img src="{{ asset('storage/products/' . $product->imagen ) }}" alt="img" height="50" width="50" class="rounded">
+                                                <img src="{{ asset('storage/' . $product->imagen ) }}" alt="img" height="50" width="50" class="rounded">
                                             </span>
                                         </td>
                                         <td>
@@ -52,10 +54,12 @@
                                             <h6>{{$product->category}}</h6>
                                         </td>
                                         <td class="text-center">
-                                            <button wire:click.prevent="$emit('scan-code-byid',{{$product->id}})" class="btn btn-dark">
-                                                <i class="fas fa-cart-arrow-down mr-1"></i>
-                                                AGREGAR
+                                            @can('Products_Shop')
+                                                <button wire:click.prevent="$emit('scan-code-byid',{{$product->id}})" class="btn btn-dark">
+                                                    <i class="fas fa-cart-arrow-down mr-1"></i>
+                                                    AGREGAR
                                             </button>
+                                            @endcan
                                         </td>
                                     </tr>
                                     @empty
@@ -68,7 +72,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer">
+                <div class="modal-footer bg-primary bg-gradient">
                     <button type="button" class="btn btn-outline-dark" data-dismiss="modal">CERRAR VENTANA</button>
                 </div>
             </div>

@@ -103,13 +103,17 @@
                                             </h6>
                                         </td>
                                         <td class="text-center">
+                                            @can('Payment_P')
                                             <button type="button" wire:click.prevent="Paid('{{ $d->id }}')"
                                                 class="btn btn-dark"><i class="fas fa-money"></i>
                                             </button>
+                                            @endcan
+                                            @can('Payment_Detail')
                                             <button wire:click.prevent="getDetails({{ $d->id }})"
                                                 class="btn btn-dark">
                                                 <i class="fas fa-list"></i>
                                             </button>
+                                            @endcan
                                             {{-- <button type="button" onclick="rePrint({{ $d->id }})"
                                                 class="btn btn-dark">
                                                 <i class="fas fa-print"></i>
@@ -129,10 +133,12 @@
     @include('livewire.payment.form')
 </div>
 <div class="col-sm-12">
+    @can('Payment_Generate')
     <li>
         <a href="javascript:void(0)" class="btn btn-dark" data-toggle="modal" data-target="#theModal">Generar pagos por
             mes</a>
     </li>
+    @endcan
 </div>
 <script>
     document.addEventListener('DOMContentLoaded', function() {

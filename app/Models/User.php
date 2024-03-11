@@ -47,4 +47,12 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function getImagenAttribute(){
+        if (!empty($this->image)) {
+            return (file_exists('storage/users/' . $this->image) ? 'users/' . $this->image : 'noimg.jpg');
+        }else{
+            return 'noimg.jpg';
+        }
+    }
 }

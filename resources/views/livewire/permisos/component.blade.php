@@ -2,15 +2,19 @@
     <div class="card-header">{{ $componentName }} | {{ $pageTitle }}
         <div class="card-action">
             <div class="dropdown">
+                @can('Permiso_Create')
                 <li>
                     <a href="javascript:void(0)" class="tabmenu btn bg-primary" data-toggle="modal"
                         data-target="#theModal">Agregar</a>
                 </li>
+                @endcan
             </div>
         </div>
     </div>
     <div class="card-body">
-        @include('common.searchbox')
+        @can('Permiso_Search')
+            @include('common.searchbox')
+        @endcan
         <div class="table-responsive">
             <table class="table table-hover">
                 <thead>
@@ -26,14 +30,18 @@
                             <th scope="row">{{ $permiso->id }}</th>
                             <td>{{ $permiso->name }}</td>
                             <td>
-                                <a href="javascript:void(0)" wire:click="Edit('{{ $permiso->id }}')"
-                                    class="btn btn-info" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                                <a href="javascript:void(0)" onclick="Confirm('{{ $permiso->id }}')"
-                                    class="btn btn-danger" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </a>
+                                @can('Permiso_Update')
+                                    <a href="javascript:void(0)" wire:click="Edit('{{ $permiso->id }}')"
+                                        class="btn btn-info" title="Edit">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                @endcan
+                                @can('Permiso_Destroy')
+                                    <a href="javascript:void(0)" onclick="Confirm('{{ $permiso->id }}')"
+                                        class="btn btn-danger" title="Delete">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                @endcan
                             </td>
                         </tr>
                     @endforeach

@@ -4,14 +4,20 @@
         {{-- Columna de la Izquierda --}}
         <div class="col-sm-12 col-md-8">
             {{-- DETALLES --}}
-            @include('livewire.pos.partials.detail')
+            @can('Products_Shop')
+                @include('livewire.pos.partials.detail')
+            @endcan
         </div>
         {{-- Columna de la Derecha --}}
         <div class="col-sm-12 col-md-4">
             {{-- TOTAL --}}
-            @include('livewire.pos.partials.total')
+            @can('Products_Shop')
+                @include('livewire.pos.partials.total')
+            @endcan
             {{-- DENOMINACIONES --}}
-            @include('livewire.pos.partials.coins')
+            @can('Products_Shop')
+                @include('livewire.pos.partials.coins')
+            @endcan
         </div>
     </div>
     <livewire:modal-search />

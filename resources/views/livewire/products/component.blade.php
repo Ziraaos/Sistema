@@ -6,22 +6,26 @@
                 {{-- <a href="javascript:void();" class="dropdown-toggle dropdown-toggle-nocaret" data-toggle="dropdown">
                     <i class="icon-options"></i>
                 </a> --}}
+                @can('Products_Create')
                     <li>
                         <a href="javascript:void(0)" class="tabmenu btn bg-primary" data-toggle="modal" data-target="#theModal">Agregar</a>
                     </li>
+                @endcan
             </div>
         </div>
 
     </div>
 
     <div class="card-body">
-        @include('common.searchbox')
+        @can('Products_Search')
+            @include('common.searchbox')
+        @endcan
         <div class="table-responsive">
             <table class="table table-hover">
                 <thead>
                     <tr>
                         <th scope="col">#</th>
-                        <th scope="col">Descripción</th>
+                        <th style="width:50px">Descripción</th>
                         <th scope="col">Barcode</th>
                         <th scope="col">Categoría</th>
                         <th scope="col">Precio</th>
@@ -35,7 +39,7 @@
                     @foreach ($data as $product)
                     <tr>
                         <th scope="row">{{$product->id}}</th>
-                        <td>{{ $product->name }}</td>
+                        <td class="nombre-columna">{{ $product->name }}</td>
                         <td>{{ $product->barcode }}</td>
                         <td>{{ $product->category }}</td>
                         <td>{{ $product->price }}</td>
@@ -47,15 +51,21 @@
                             </span>
                         </td>
                         <td>
-                            <a href="javascript:void(0)" wire:click="Edit('{{$product->id}}')" class="btn btn-info" title="Edit">
-                                <i class="fas fa-edit"></i>
-                            </a>
+                            @can('Products_Update')
+                                <a href="javascript:void(0)" wire:click="Edit('{{$product->id}}')" class="btn btn-info" title="Edit">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                            @endcan
                             {{-- @if($category->products->count() < 1) --}}
-                            <a href="javascript:void(0)" onclick="Confirm('{{$product->id}}')" class="btn btn-danger" title="Delete">
-                                <i class="fas fa-trash"></i>
-                            </a>
-                            <button type="button" wire:click.prevent="ScanCode('{{$product->barcode}}')" class="btn btn-dark"><i class="fas fa-shopping-cart"></i>
-                            </button>
+                            @can('Products_Destroy')
+                                <a href="javascript:void(0)" onclick="Confirm('{{$product->id}}')" class="btn btn-danger" title="Delete">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            @endcan
+                            @can('Products_Shop')
+                                <button type="button" wire:click.prevent="ScanCode('{{$product->barcode}}')" class="btn btn-dark"><i class="fas fa-shopping-cart"></i>
+                                </button>
+                            @endcan
                             {{-- @endif --}}
                         </td>
                     </tr>
@@ -67,6 +77,14 @@
     </div>
     @include('livewire.products.form')
 </div>
+<style>
+    .nombre-columna {
+        max-width: 250px; /* Puedes ajustar el valor según tus necesidades */
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+</style>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {

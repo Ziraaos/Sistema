@@ -5,20 +5,20 @@
                 {{-- <a href="javascript:void();" class="dropdown-toggle dropdown-toggle-nocaret" data-toggle="dropdown">
                     <i class="icon-options"></i>
                 </a> --}}
-                {{-- @can('Service_Create') --}}
+                @can('Method_Create')
                     <li>
                         <a href="javascript:void(0)" class="tabmenu btn bg-primary" data-toggle="modal"
                             data-target="#theModal">Agregar</a>
                     </li>
-                {{-- @endcan --}}
+                @endcan
             </div>
         </div>
     </div>
 
     <div class="card-body">
-        {{-- @can('Service_Search') --}}
+        @can('Method_Search')
             @include('common.searchbox')
-        {{-- @endcan --}}
+        @endcan
         <div class="table-responsive">
             <table class="table table-hover">
                 <thead>
@@ -44,13 +44,13 @@
                             <td>{{ $method->ci }}</td>
                             <td>{{ $method->note }}</td>
                             <td>
-                                {{-- @can('Service_Update') --}}
+                                @can('Method_Update')
                                     <a href="javascript:void(0)" wire:click="Edit('{{ $method->id }}')"
                                         class="btn btn-info" title="Edit">
                                         <i class="fas fa-edit"></i>
                                     </a>
-                                {{-- @endcan
-                                @can('Service_Destroy') --}}
+                                @endcan
+                                @can('Method_Destroy')
                                     {{-- @if ($method->products->count() < 1) --}}
                                     <a href="javascript:void(0)"
                                         {{-- onclick="Confirm('{{ $method->id }}' , '{{ $method->products->count() }}')" --}}
@@ -59,7 +59,7 @@
                                         <i class="fas fa-trash"></i>
                                     </a>
                                     {{-- @endif --}}
-                                {{-- @endcan --}}
+                                @endcan
                             </td>
                         </tr>
                     @endforeach

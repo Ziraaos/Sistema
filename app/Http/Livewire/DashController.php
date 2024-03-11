@@ -9,6 +9,7 @@ use App\Models\SaleDetail;
 use Carbon\Carbon;
 use DateTime;
 use Livewire\Component;
+use RealRashid\SweetAlert\Facades\Alert;
 use DB;
 
 class DashController extends Component
@@ -31,6 +32,7 @@ class DashController extends Component
         $this->getPaymentsMonth();
         $this->getMoras();
         $this->checkPendingPaymentsReminder();
+        $this->mostrarAlerta();
         return view('livewire.dashboard.component', [
             'data' => $this->customerDetails,
         ])
@@ -212,5 +214,12 @@ class DashController extends Component
             }
         }
         /* dump($message); */
+    }
+
+    public function mostrarAlerta()
+    {
+        Alert::success('Éxito', 'La operación se ha completado con éxito.');
+
+        return view('dashboard');
     }
 }

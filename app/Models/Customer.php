@@ -29,7 +29,7 @@ class Customer extends Model
     }
 
     public function getImagenAttribute(){
-        if (!is_null($this->image)) {
+        if (!empty($this->image)) {
             return (file_exists('storage/customers/' . $this->image) ? 'customers/' . $this->image : 'noimg.jpg');
         }else{
             return 'noimg.jpg';

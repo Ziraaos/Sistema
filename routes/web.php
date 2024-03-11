@@ -22,6 +22,7 @@ use App\Http\Livewire\MethodsController;
 use App\Http\Livewire\PaymentsController;
 use App\Http\Livewire\ProfileController;
 use App\Http\Livewire\ReportServiceController;
+use App\Http\Livewire\ReportCustomerController;
 use App\Http\Livewire\ServicesController;
 use App\Http\Livewire\UsersController;
 
@@ -70,11 +71,18 @@ Route::middleware(['auth'])->group(function () {
     Route::get('cashout', CashoutController::class);
     Route::get('reports', ReportsController::class);
     Route::get('reportService', ReportServiceController::class);
+    Route::get('reportCustomer', ReportCustomerController::class);
     /* Route::get('services', ServicesController::class); */
 
     //reportes PDF
     Route::get('report/pdf/{user}/{type}/{f1}/{f2}', [ExportController::class, 'reportPDF']);
     Route::get('report/pdf/{user}/{type}', [ExportController::class, 'reportPDF']);
+
+    //reportes servicios
+    Route::get('reportService/pdf/{location}/{type}', [ExportController::class, 'reportServicePDF']);
+
+    //reportes clientes
+    Route::get('reportCustomer/pdf/{namec}/{cid}/{location}', [ExportController::class, 'reportCustomerPDF']);
 
     //reportes Excel
     Route::get('report/excel/{user}/{type}/{f1}/{f2}', [ExportController::class, 'reporteExcel']);

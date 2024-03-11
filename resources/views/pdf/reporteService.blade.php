@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Reporte de Ventas</title>
+    <title>Reporte de Servicios</title>
 
     <!-- cargar a través de la url del sistema -->
 
@@ -34,20 +34,23 @@
 
                 <td width="70%" class="text-left text-company" style="vertical-align: top; padding-top: 10px">
                     @if ($reportType == 0)
-                        <span style="font-size: 16px"><strong>Reporte de Ventas del Día</strong></span>
-                    @else
-                        <span style="font-size: 16px"><strong>Reporte de Ventas por Fechas</strong></span>
+                        <span style="font-size: 16px"><strong>Reporte de todos los clientes</strong></span>
+                    @elseif ($reportType == 1)
+                        <span style="font-size: 16px"><strong>Reporte de clientes sin deudas</strong></span>
+                    @elseif ($reportType == 2)
+                        <span style="font-size: 16px"><strong>Reporte de clientes con 1 mes de deuda</strong></span>
+                    @elseif ($reportType == 3)
+                        <span style="font-size: 16px"><strong>Reporte de clientes con 2 meses de deuda</strong></span>
+                    @elseif ($reportType == 4)
+                        <span style="font-size: 16px"><strong>Reporte de clientes con 3 o más meses de deuda</strong></span>
                     @endif
                     <br>
-                    @if ($reportType != 0)
-                        <span style="font-size: 16px"><strong>Fecha de Consulta: {{ $dateFrom }} al
-                                {{ $dateTo }}</strong></span>
+                    @if ($locationid != 0)
+                        <span style="font-size: 16px"><strong>Lugar de servicio: {{ $nombre ?? ' ' }}</strong></span>
                     @else
-                        <span style="font-size: 16px"><strong>Fecha de Consulta:
-                                {{ \Carbon\Carbon::now()->format('d-M-Y') }}</strong></span>
+                        <span style="font-size: 16px"><strong>Lugar de servicio: TODOS</strong></span>
                     @endif
                     <br>
-                    <span style="font-size: 14px">Usuario: {{ $user }}</span>
                 </td>
             </tr>
         </table>
@@ -59,39 +62,38 @@
             <thead>
                 <tr>
                     <th width="10%">FOLIO</th>
-                    <th width="12%">IMPORTE</th>
-                    <th width="10%">ITEMS</th>
-                    <th width="12%">ESTATUS</th>
-                    <th>USUARIO</th>
-                    <th width="18%">FECHA</th>
+                    <th width="25%">NOMBRES</th>
+                    <th width="25%">APELLIDOS</th>
+                    <th width="12%">MESES DE DEUDA</th>
+                    <th width="28%">TOTAL DEUDA</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($data as $item)
                     <tr>
-                        <td align="center">{{ $item->id }}</td>
-                        <td align="center">{{ number_format($item->total, 2) }}</td>
-                        <td align="center">{{ $item->items }}</td>
-                        <td align="center">{{ $item->status }}</td>
-                        <td align="center">{{ $item->user }}</td>
-                        <td align="center">
-                            {{ \Carbon\Carbon::parse($item->created_at)->translatedFormat('d F Y H:m A') }}</td>
+                        <td align="center">{{ $item->customer_id }}</td>
+                        <td align="center">{{ $item->first_name }}</td>
+                        <td align="center">{{ $item->last_name }}</td>
+                        <td align="center">{{ $item->meses_deuda }}</td>
+                        <td align="center">Bs. {{ number_format($item->deuda_total, 2) }}</td>
+                        {{-- <td align="center">{{ $item->user }}</td> --}}
+                        {{-- <td align="center">
+                            {{ \Carbon\Carbon::parse($item->created_at)->translatedFormat('d F Y H:m A') }}</td> --}}
                         {{-- <td align="center">{{ \Carbon\Carbon::parse($item->created_at)->isoFormat('dddd D [de] MMMM [de] YYYY') }}</td> --}}
                     </tr>
                 @endforeach
             </tbody>
             <tfoot>
                 <tr>
-                    <td class="text-center">
+                    <td colspan="3" class="text-center">
                         <span><b>TOTALES</b></span>
                     </td>
-                    <td colspan="1" class="text-center">
-                        <span><strong>${{ number_format($data->sum('total'), 2) }}</strong></span>
+                    <td class="text-center">
+                        {{ $data->sum('meses_deuda') }}
                     </td>
                     <td class="text-center">
-                        {{ $data->sum('items') }}
+                        <span><strong>Bs. {{ number_format($data->sum('deuda_total'), 2) }}</strong></span>
                     </td>
-                    <td colspan="3"></td>
                 </tr>
             </tfoot>
         </table>

@@ -5,16 +5,20 @@
                 {{-- <a href="javascript:void();" class="dropdown-toggle dropdown-toggle-nocaret" data-toggle="dropdown">
                     <i class="icon-options"></i>
                 </a> --}}
+                @can('Denomination_Create')
                     <li>
                         <a href="javascript:void(0)" class="tabmenu btn bg-primary" data-toggle="modal" data-target="#theModal">Agregar</a>
                     </li>
+                @endcan
             </div>
         </div>
 
     </div>
 
     <div class="card-body">
-        @include('common.searchbox')
+        @can('Denomination_Search')
+            @include('common.searchbox')
+        @endcan
         <div class="table-responsive">
             <table class="table table-hover">
                 <thead>
@@ -38,12 +42,16 @@
                             </span>
                         </td>
                         <td>
-                            <a href="javascript:void(0)" wire:click="Edit('{{$coin->id}}')" class="btn btn-info" title="Edit">
-                                <i class="fas fa-edit"></i>
-                            </a>
-                            <a href="javascript:void(0)" onclick="Confirm('{{$coin->id}}')" class="btn btn-danger" title="Delete">
-                                <i class="fas fa-trash"></i>
-                            </a>
+                            @can('Denomination_Update')
+                                <a href="javascript:void(0)" wire:click="Edit('{{$coin->id}}')" class="btn btn-info" title="Edit">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                            @endcan
+                            @can('Denomination_Destroy')
+                                <a href="javascript:void(0)" onclick="Confirm('{{$coin->id}}')" class="btn btn-danger" title="Delete">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            @endcan
                         </td>
                     </tr>
                     @endforeach

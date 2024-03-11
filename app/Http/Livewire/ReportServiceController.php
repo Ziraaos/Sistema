@@ -19,6 +19,7 @@ class ReportServiceController extends Component
         $this->sumDetails = 0;
         $this->countDetails = 0;
         $this->reportType = 0;
+        $this->locationid = 0;
         $this->userId = 0;
         $this->months = 0;
     }
@@ -34,15 +35,108 @@ class ReportServiceController extends Component
             ->section('content');
     }
 
-    public function PaymentsByLocation($months)
+    public function PaymentsByLocation()
     {
-        if ($this->reportType == 0) // ventas del dia
+        if ($this->reportType == 0) //
         {
-            /* $from = Carbon::parse(Carbon::now())->format('Y-m-d') . ' 00:00:00';
-            $to = Carbon::parse(Carbon::now())->format('Y-m-d')   . ' 23:59:59';
+            if ($this->locationid == 0) {
+                $this->data = DB::table('payments')
+                    ->join('customers', 'payments.customer_id', '=', 'customers.id')
+                    ->select(
+                        'payments.customer_id',
+                        'customers.first_name',
+                        'customers.last_name',
+                        DB::raw('SUM(total) as deuda_total'),
+                        DB::raw('COUNT(DISTINCT CASE WHEN payments.status = "PENDING" THEN MONTH(date_serv) END) as meses_deuda'))
+                    /* ->where('payments.status', 'PENDING') */ // Ajusta según tu necesidad
+                    ->groupBy('payments.customer_id', 'customers.first_name', 'customers.last_name')
+                    ->havingRaw('meses_deuda >= ?', [0])
+                    ->get();
+            } else {
+
+                $this->data = DB::table('payments')
+                    ->join('customers', 'payments.customer_id', '=', 'customers.id')
+                    ->select(
+                        'customers.location_id',
+                        'payments.customer_id',
+                        'customers.first_name',
+                        'customers.last_name',
+                        DB::raw('SUM(total) as deuda_total'),
+                        DB::raw('COUNT(DISTINCT CASE WHEN payments.status = "PENDING" THEN MONTH(date_serv) END) as meses_deuda')
+                    )
+                    ->when($this->locationid, function ($query, $locationid) {
+                        return $query->where('customers.location_id', $locationid);
+                    })
+                    ->groupBy('customers.location_id', 'payments.customer_id', 'customers.first_name', 'customers.last_name')
+                    ->havingRaw('meses_deuda >= ?', [0])
+                    ->get();
+            }
+        } elseif ($this->reportType == 4) {
+            if ($this->locationid == 0) {
+                $this->data = DB::table('payments')
+                    ->join('customers', 'payments.customer_id', '=', 'customers.id')
+                    ->select(
+                        'payments.customer_id',
+                        'customers.first_name',
+                        'customers.last_name',
+                        DB::raw('SUM(total) as deuda_total'),
+                        DB::raw('COUNT(DISTINCT CASE WHEN payments.status = "PENDING" THEN MONTH(date_serv) END) as meses_deuda'))
+                    /* ->where('payments.status', 'PENDING') */ // Ajusta según tu necesidad
+                    ->groupBy('payments.customer_id', 'customers.first_name', 'customers.last_name')
+                    ->havingRaw('meses_deuda >= ?', [$this->reportType - 1])
+                    ->get();
+            } else {
+
+                $this->data = DB::table('payments')
+                    ->join('customers', 'payments.customer_id', '=', 'customers.id')
+                    ->select(
+                        'customers.location_id',
+                        'payments.customer_id',
+                        'customers.first_name',
+                        'customers.last_name',
+                        DB::raw('SUM(total) as deuda_total'),
+                        DB::raw('COUNT(DISTINCT CASE WHEN payments.status = "PENDING" THEN MONTH(date_serv) END) as meses_deuda')
+                    )
+                    ->when($this->locationid, function ($query, $locationid) {
+                        return $query->where('customers.location_id', $locationid);
+                    })
+                    ->groupBy('customers.location_id', 'payments.customer_id', 'customers.first_name', 'customers.last_name')
+                    ->havingRaw('meses_deuda >= ?', [$this->reportType - 1])
+                    ->get();
+            }
         } else {
-            $from = Carbon::parse($this->dateFrom)->format('Y-m-d') . ' 00:00:00';
-            $to = Carbon::parse($this->dateTo)->format('Y-m-d')     . ' 23:59:59'; */
+            if ($this->locationid == 0) {
+                $this->data = DB::table('payments')
+                    ->join('customers', 'payments.customer_id', '=', 'customers.id')
+                    ->select(
+                        'payments.customer_id',
+                        'customers.first_name',
+                        'customers.last_name',
+                        DB::raw('SUM(total) as deuda_total'),
+                        DB::raw('COUNT(DISTINCT CASE WHEN payments.status = "PENDING" THEN MONTH(date_serv) END) as meses_deuda'))
+                    /* ->where('payments.status', 'PENDING') */ // Ajusta según tu necesidad
+                    ->groupBy('payments.customer_id', 'customers.first_name', 'customers.last_name')
+                    ->havingRaw('meses_deuda = ?', [$this->reportType - 1])
+                    ->get();
+            } else {
+
+                $this->data = DB::table('payments')
+                    ->join('customers', 'payments.customer_id', '=', 'customers.id')
+                    ->select(
+                        'customers.location_id',
+                        'payments.customer_id',
+                        'customers.first_name',
+                        'customers.last_name',
+                        DB::raw('SUM(total) as deuda_total'),
+                        DB::raw('COUNT(DISTINCT CASE WHEN payments.status = "PENDING" THEN MONTH(date_serv) END) as meses_deuda')
+                    )
+                    ->when($this->locationid, function ($query, $locationid) {
+                        return $query->where('customers.location_id', $locationid);
+                    })
+                    ->groupBy('customers.location_id', 'payments.customer_id', 'customers.first_name', 'customers.last_name')
+                    ->havingRaw('meses_deuda = ?', [$this->reportType - 1])
+                    ->get();
+            }
         }
 
         if ($this->reportType == 1 && ($this->dateFrom == '' || $this->dateTo == '')) {
@@ -50,7 +144,7 @@ class ReportServiceController extends Component
         }
 
 
-        if ($this->locationid == 0) {
+        /* if ($this->locationid == 0) {
             $this->data = DB::table('payments')
                 ->join('customers', 'payments.customer_id', '=', 'customers.id')
                 ->select(
@@ -59,14 +153,11 @@ class ReportServiceController extends Component
                     'customers.last_name',
                     DB::raw('SUM(total) as deuda_total'),
                     DB::raw('COUNT(DISTINCT CASE WHEN payments.status = "PENDING" THEN MONTH(date_serv) END) as meses_deuda'))
-                /* ->where('payments.status', 'PENDING') */ // Ajusta según tu necesidad
                 ->groupBy('payments.customer_id', 'customers.first_name', 'customers.last_name')
                 ->havingRaw('meses_deuda >= ?', [$this->months])
                 ->get();
         }
-        /* elseif ($this->locationid == 0 && $this->reportType == 1) {
-            # code...
-        } */ else {
+        else {
 
             $this->data = DB::table('payments')
                 ->join('customers', 'payments.customer_id', '=', 'customers.id')
@@ -84,7 +175,7 @@ class ReportServiceController extends Component
                 ->groupBy('customers.location_id', 'payments.customer_id', 'customers.first_name', 'customers.last_name')
                 ->havingRaw('meses_deuda >= ?', [$this->months])
                 ->get();
-        }
+        } */
         /* dump($this->data); */
     }
 

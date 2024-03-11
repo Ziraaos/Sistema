@@ -3,7 +3,7 @@
         <div class="card-header">
             <h4 class="card-title text-center"><b>Arqueo de Caja</b></h4>
         </div>
-
+        @can('Cashout_Index')
         <div class="card-body">
             <div class="row">
                 <div class="col-sm-12 col-md-3">
@@ -44,11 +44,11 @@
                 <div class="col-sm-12 col-md-3 align-self-center d-flex justify-content-around">
                     @if ($userid > 0 && $fromDate != null && $toDate != null)
                         <button wire:click.prevent="Consultar" type="button" class="btn btn-dark">Consultar</button>
-                    {{-- @endif
-
-                    @if ($total > 0) --}}
-                        <button wire:click.prevent="Print()" type="button" class="btn btn-dark">Imprimir</button>
                     @endif
+
+                    {{-- @if ($total > 0)
+                        <button wire:click.prevent="Print()" type="button" class="btn btn-dark">Imprimir</button>
+                    @endif --}}
                 </div>
             </div>
         </div>
@@ -114,6 +114,7 @@
                 </div>
             </div>
         </div>
+        @endcan
     </div>
     @include('livewire.cashout.modalDetails')
 </div>

@@ -1,7 +1,7 @@
 <div class="card">
     <div class="card-header">{{ $componentName }}
     </div>
-
+    @can('Asign_Index')
     <div class="card-body">
         <div class="form-inline">
             <div class="form-group mr-5">
@@ -58,6 +58,7 @@
             </div>
         </div>
     </div>
+    @endcan
     {{-- @include('livewire.permisos.form') --}}
 </div>
 

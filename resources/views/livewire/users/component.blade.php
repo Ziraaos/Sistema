@@ -6,17 +6,21 @@
                 {{-- <a href="javascript:void();" class="dropdown-toggle dropdown-toggle-nocaret" data-toggle="dropdown">
                     <i class="icon-options"></i>
                 </a> --}}
-                <li>
-                    <a href="javascript:void(0)" class="tabmenu btn bg-primary" data-toggle="modal"
-                        data-target="#theModal">Agregar</a>
-                </li>
+                @can('User_Create')
+                    <li>
+                        <a href="javascript:void(0)" class="tabmenu btn bg-primary" data-toggle="modal"
+                            data-target="#theModal">Agregar</a>
+                    </li>
+                @endcan
             </div>
         </div>
 
     </div>
 
     <div class="card-body">
-        @include('common.searchbox')
+        @can('User_Search')
+            @include('common.searchbox')
+        @endcan
         <div class="table-responsive">
             <table class="table table-hover">
                 <thead>
@@ -39,7 +43,8 @@
                             <td>{{ $r->phone }}</td>
                             <td>{{ $r->email }}</td>
                             <td>
-                                <span class="badge {{ $r->status == 'Active' ? 'badge-success' : 'badge-danger' }} text-uppercase">{{ $r->status }}</span>
+                                <span
+                                    class="badge {{ $r->status == 'Active' ? 'badge-success' : 'badge-danger' }} text-uppercase">{{ $r->status }}</span>
                             </td>
                             <td class="text-uppercase">
                                 {{ $r->profile }}
@@ -47,23 +52,25 @@
                             </td>
                             <td>
                                 <span>
-                                    @if ($r->image != null)
-                                        <img
-                                            src="{{ asset('storage/users/' . $r->image) }}" height="70" width="80" class="rounded">
-                                    @endif
+                                    <img src="{{ asset('storage/' . $r->imagen) }}" height="70" width="80"
+                                        class="rounded">
                                 </span>
                             </td>
                             <td>
-                                <a href="javascript:void(0)" wire:click="edit('{{ $r->id }}')"
-                                    class="btn btn-info" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                                {{-- @if (Auth()->user()->id != $r->id) --}}
-                                    <a href="javascript:void(0)" onclick="Confirm('{{ $r->id }}')"
-                                        class="btn btn-dark" title="Delete">
-                                        <i class="fas fa-trash"></i>
+                                @can('User_Update')
+                                    <a href="javascript:void(0)" wire:click="edit('{{ $r->id }}')"
+                                        class="btn btn-info" title="Edit">
+                                        <i class="fas fa-edit"></i>
                                     </a>
-                                {{-- @endif --}}
+                                @endcan
+                                @can('User_Destroy')
+                                    @if (Auth()->user()->id != $r->id)
+                                        <a href="javascript:void(0)" onclick="Confirm('{{ $r->id }}')"
+                                            class="btn btn-dark" title="Delete">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    @endif
+                                @endcan
                             </td>
                         </tr>
                     @endforeach

@@ -5,20 +5,14 @@
                 {{-- <a href="javascript:void();" class="dropdown-toggle dropdown-toggle-nocaret" data-toggle="dropdown">
                     <i class="icon-options"></i>
                 </a> --}}
-                @can('Customer_Create')
-                <li>
-                    <a href="javascript:void(0)" class="tabmenu btn bg-primary" data-toggle="modal"
-                        data-target="#theModal">Agregar</a>
-                </li>
-                @endcan
             </div>
         </div>
     </div>
 
     <div class="card-body">
-        @can('Customer_Search')
+        {{-- @can('Customer_Search') --}}
         @include('common.searchbox')
-        @endcan
+        {{-- @endcan --}}
         <div class="table-responsive">
             <table class="table table-hover">
                 <thead>
@@ -26,6 +20,7 @@
                         <th scope="col">#</th>
                         <th scope="col">Nombres</th>
                         <th scope="col">Apellidos</th>
+                        <th scope="col">C.I.</th>
                         <th scope="col">Email</th>
                         <th scope="col">Celular</th>
                         <th scope="col">ubicación servicio</th>
@@ -43,6 +38,7 @@
                             <th scope="row">{{ $customer->id }}</th>
                             <td>{{ $customer->first_name }}</td>
                             <td>{{ $customer->last_name }}</td>
+                            <td>{{ $customer->ci }}</td>
                             <td>{{ $customer->email }}</td>
                             <td>{{ $customer->phone }}</td>
                             <td>{{ $customer->location }}</td>
@@ -67,20 +63,10 @@
                                     class="badge {{ $customer->status == 'Active' ? 'badge-success' : 'badge-danger' }} text-uppercase">{{ $customer->status }}</span>
                             </td>
                             <td>
-                                @can('Customer_Update')
-                                <a href="javascript:void(0)" wire:click="Edit('{{ $customer->id }}')"
-                                    class="btn btn-info" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                                @endcan
-                                @can('Customer_Destroy')
-                                {{-- @if ($customer->products->count() < 1) --}}
-                                <a href="javascript:void(0)" {{-- onclick="Confirm('{{ $customer->id }}' , '{{ $customer->products->count() }}')" --}}
-                                    onclick="Confirm('{{ $customer->id }}')" class="btn btn-danger" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </a>
-                                {{-- @endif --}}
-                                @endcan
+                                <button wire:click.prevent="getDetails({{ $customer->id }})"
+                                    class="btn btn-dark">
+                                    <i class="fas fa-list"></i>
+                                </button>
                             </td>
                         </tr>
                     @endforeach
@@ -89,20 +75,24 @@
             {{ $customers->links() }}
         </div>
     </div>
-    @include('livewire.customer.form')
+    @include('livewire.reportCustomer.detail')
 </div>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        window.livewire.on('customer-added', msg => {
+        window.livewire.on('payment-added', msg => {
             $('#theModal').modal('hide');
             noty(msg)
         });
-        window.livewire.on('customer-updated', msg => {
+        window.livewire.on('payment-not-added', msg => {
             $('#theModal').modal('hide');
             noty(msg)
         });
-        window.livewire.on('customer-deleted', msg => {
+        window.livewire.on('payment-updated', msg => {
+            $('#theModal').modal('hide');
+            noty(msg)
+        });
+        window.livewire.on('payment-deleted', msg => {
             noty(msg)
         });
         window.livewire.on('hide-modal', msg => {
@@ -114,6 +104,16 @@
         window.livewire.on('hidden.bs.modal', msg => {
             $('.er').css('display', 'none');
         });
+
+        function resetInputFile() {
+            $('input[type=file]').val('');
+        }
+
+        //eventos
+        window.livewire.on('show-modal-detail', Msg => {
+            $('#modalDetails').modal('show')
+        })
+
     });
 
     function resetInputFile() {
