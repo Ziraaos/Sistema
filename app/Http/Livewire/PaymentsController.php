@@ -19,7 +19,9 @@ class PaymentsController extends Component
     use WithPagination;
     use WithFileUploads;
 
-    public $componentName, $selected_id, $data, $details, $sumDetails, $countDetails, $reportType, $locationid, $locationId, $date, $month, $year, $customerId, $days_g, $date_serv, $paids, $customer, $total, $deudas = [], $payid, $lastPayment, $remainingChange, $otid, $ttotal, $namec, $image, $localidad, $method;
+    public $componentName, $pageTitle, $selected_id, $data, $datos, $details, $search, $sumDetails, $countDetails, $reportType, $locationid, $locationId, $date, $month, $year, $customerId, $days_g, $date_serv, $paids, $customer, $total, $deudas = [], $payid, $lastPayment, $remainingChange, $otid, $ttotal, $namec, $image, $localidad, $method;
+    private $pagination = 10;
+    protected $paginationTheme = 'bootstrap';
 
     public $clientId;
     public $debtData = [];
@@ -29,6 +31,8 @@ class PaymentsController extends Component
     public $paymentDetails;
     public function mount()
     {
+        $this->pageTitle = 'Listado';
+        $this->componentName = 'Clientes';
         $this->componentName = 'Pagos clientes servicios';
         $this->data = [];
         $this->details = [];
@@ -48,9 +52,25 @@ class PaymentsController extends Component
 
     public function render()
     {
-        $this->PaymentsByMonth();
-
+        if (strlen($this->search) > 0) {
+            $datos = Customer::join('locations as l', 'l.id', 'customers.location_id')
+                ->join('services as s', 's.id', 'customers.service_id')
+                ->select('customers.*', 'l.name as location', 's.name as service')
+                ->where('customers.first_name', 'like', '%' . $this->search . '%')
+                ->orWhere('customers.last_name', 'like', '%' . $this->search . '%')
+                ->orWhere('customers.ci', 'like', '%' . $this->search . '%')
+                ->orWhere('l.name', 'like', '%' . $this->search . '%')
+                ->orderBy('customers.first_name', 'asc')
+                ->paginate($this->pagination);
+        } else {
+            $datos = Customer::join('locations as l', 'l.id', 'customers.location_id')
+                ->join('services as s', 's.id', 'customers.service_id')
+                ->select('customers.*', 'l.name as location', 's.name as service')
+                ->orderBy('customers.first_name', 'asc')
+                ->paginate($this->pagination);
+        }
         return view('livewire.payment.payments', [
+            'customers' => $datos,
             'locations' => Location::orderBy('name', 'asc')->get(),
             'services' => Service::orderBy('name', 'asc')->get(),
             'methods' => PaymentMethod::orderBy('name', 'asc')->get(),

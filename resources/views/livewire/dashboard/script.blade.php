@@ -293,25 +293,3 @@
 
     })
 </script>
-<script>
-    /* window.onload = function() {
-        Swal.fire({
-            title: "The Internet?",
-            text: "That thing is still around?",
-            icon: "question"
-        });
-    } */
-
-    document.addEventListener('DOMContentLoaded', function() {
-        //events
-
-        window.livewire.on('payment-reminder', msg => {
-            Swal.fire({
-                title: 'titulo',
-                text: 'text',
-                icon: 'question'
-            });
-        });
-
-    })
-</script>

@@ -104,10 +104,10 @@
                                     </td>
                                     <td class='text-center'>
                                         <span>
-                                            <img src="{{ asset('storage/payments/' . $p->image) }}" height="70"
+                                            <img src="{{ asset('storage/' . $p->imagen) }}" height="70"
                                                 width="80" class="rounded" alt="no-image">
                                         </span>
-                                        <a href="{{ asset('storage/payments/' . $p->image) }}" data-lightbox="roadtrip">Ver</a>
+                                        <a href="{{ asset('storage/' . $p->imagen) }}" data-lightbox="roadtrip">Ver</a>
                                     </td>
                                 </tr>
                             @endforeach

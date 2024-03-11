@@ -59,7 +59,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('locations', LocationsController::class);
     Route::get('customers', CustomersController::class);
     Route::get('methods', MethodsController::class);
-    Route::get('payments', PaymentsController::class);
+    Route::get('payments', PaymentsController::class)->name('payments');
 
     Route::group(['middleware' => ['role:Admin']], function () {
         Route::get('roles', RolesController::class);

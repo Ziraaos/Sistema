@@ -72,4 +72,5 @@
         </div>
     </div>
     @include('livewire.dashboard.script')
+    @include('livewire.alert.alert')
 </div>
