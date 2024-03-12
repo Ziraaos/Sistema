@@ -75,10 +75,17 @@
         </li>
         @endcan
         <li class="sidebar-header">SERVICIOS</li>
+        @can('Plan_Index')
+        <li class="">
+            <a href="{{ url('plans') }}" data-active="false">
+                <i class="zmdi zmdi-collection-bookmark"></i> <span>Planes</span>
+            </a>
+        </li>
+        @endcan
         @can('Service_Index')
         <li class="">
             <a href="{{ url('services') }}" data-active="false">
-                <i class="zmdi zmdi-collection-bookmark"></i> <span>Servicios/Planes</span>
+                <i class="zmdi zmdi-collection-bookmark"></i> <span>Servicios</span>
             </a>
         </li>
         @endcan
@@ -113,8 +120,21 @@
         <li class="sidebar-header">REPORTES</li>
 
         <li class="">
+            <a href="{{ url('reportDebt') }}" data-active="false">
+                <i class="zmdi zmdi-assignment"></i> <span>Reportes Deudas</span>
+            </a>
+        </li>
+
+        <li class="">
             <a href="{{ url('reportService') }}" data-active="false">
                 <i class="zmdi zmdi-assignment"></i> <span>Reportes Servicios</span>
+            </a>
+        </li>
+
+
+        <li class="">
+            <a href="{{ url('reportCustomer') }}" data-active="false">
+                <i class="zmdi zmdi-assignment"></i> <span>Reportes Clientes</span>
             </a>
         </li>
 
@@ -123,13 +143,6 @@
                 <i class="zmdi zmdi-assignment"></i> <span>Reportes Ventas</span>
             </a>
         </li>
-
-        <li class="">
-            <a href="{{ url('reportCustomer') }}" data-active="false">
-                <i class="zmdi zmdi-assignment"></i> <span>Reportes Clientes</span>
-            </a>
-        </li>
-
     </ul>
 
 </div>

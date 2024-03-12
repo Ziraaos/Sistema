@@ -15,7 +15,7 @@ class CustomersController extends Component
     use WithFileUploads;
 
     public $first_name, $last_name, $email, $phone, $disc, $address, $image, $status, $locationid, $serviceid, $search, $selected_id, $pageTitle, $componentName;
-    private $pagination = 5;
+    private $pagination = 10;
     protected $paginationTheme = 'bootstrap';
 
     public function mount()

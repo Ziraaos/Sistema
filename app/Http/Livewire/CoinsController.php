@@ -15,7 +15,7 @@ class CoinsController extends Component
     use WithPagination;
 
     public $type, $value, $search, $image, $selected_id, $pageTitle, $componentName;
-    private $pagination = 5;
+    private $pagination = 10;
     protected $paginationTheme = 'bootstrap';
 
     // Para inicializar propiedades que se van a renderizar en la vista principal del componente

@@ -33,7 +33,23 @@
                 </td>
 
                 <td width="70%" class="text-left text-company" style="vertical-align: top; padding-top: 10px">
-                    <span style="font-size: 16px"><strong>Lugar de servicio: TODOS</strong></span>
+                    @if ($reportType == 0)
+                        <span style="font-size: 16px"><strong>Reporte de todos los clientes</strong></span>
+                    @elseif ($reportType == 1)
+                        <span style="font-size: 16px"><strong>Reporte de clientes sin deudas</strong></span>
+                    @elseif ($reportType == 2)
+                        <span style="font-size: 16px"><strong>Reporte de clientes con 1 mes de deuda</strong></span>
+                    @elseif ($reportType == 3)
+                        <span style="font-size: 16px"><strong>Reporte de clientes con 2 meses de deuda</strong></span>
+                    @elseif ($reportType == 4)
+                        <span style="font-size: 16px"><strong>Reporte de clientes con 3 o más meses de deuda</strong></span>
+                    @endif
+                    <br>
+                    @if ($locationid != 0)
+                        <span style="font-size: 16px"><strong>Lugar de servicio: {{ $nombre ?? ' ' }}</strong></span>
+                    @else
+                        <span style="font-size: 16px"><strong>Lugar de servicio: TODOS</strong></span>
+                    @endif
                     <br>
                 </td>
             </tr>
@@ -45,21 +61,21 @@
         <table cellpadding="0" cellspacing="0" class="table-items" width="100%">
             <thead>
                 <tr>
-                    <th width="25%">NOMBRE DEL LUGAR</th>
-                    <th width="25%">PLAN</th>
-                    <th width="25%">NOMBRE DEL SERVICIO</th>
-                    <th width="15%">PRECIO</th>
-                    <th width="10%">CANTIDAD DE CLIENTES</th>
+                    <th width="10%">FOLIO</th>
+                    <th width="25%">NOMBRES</th>
+                    <th width="25%">APELLIDOS</th>
+                    <th width="12%">MESES DE DEUDA</th>
+                    <th width="28%">TOTAL DEUDA</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($data as $item)
                     <tr>
-                        <td align="center">{{ $item->location_name }}</td>
-                        <td align="center">{{ $item->plan_name }}</td>
-                        <td align="center">{{ $item->service_name }}</td>
-                        <td align="center">Bs. {{ number_format($item->price, 2) }}</td>
-                        <td align="center">{{ $item->services_count }}</td>
+                        <td align="center">{{ $item->customer_id }}</td>
+                        <td align="center">{{ $item->first_name }}</td>
+                        <td align="center">{{ $item->last_name }}</td>
+                        <td align="center">{{ $item->meses_deuda }}</td>
+                        <td align="center">Bs. {{ number_format($item->deuda_total, 2) }}</td>
                         {{-- <td align="center">{{ $item->user }}</td> --}}
                         {{-- <td align="center">
                             {{ \Carbon\Carbon::parse($item->created_at)->translatedFormat('d F Y H:m A') }}</td> --}}
@@ -69,11 +85,14 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <td colspan="4" class="text-right">
-                        <span><b>TOTAL CLIENTES</b></span>
+                    <td colspan="3" class="text-center">
+                        <span><b>TOTALES</b></span>
                     </td>
                     <td class="text-center">
-                        <span><strong>{{ $data->sum('services_count') }}</strong></span>
+                        {{ $data->sum('meses_deuda') }}
+                    </td>
+                    <td class="text-center">
+                        <span><strong>Bs. {{ number_format($data->sum('deuda_total'), 2) }}</strong></span>
                     </td>
                 </tr>
             </tfoot>

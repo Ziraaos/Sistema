@@ -66,7 +66,7 @@ class ExportController extends Controller
 
     }
 
-    public function reportServicePDF($locationid, $reportType)
+    public function reportDebtPDF($locationid, $reportType)
     {
         $data = [];
         Carbon::setLocale('es');
@@ -83,7 +83,8 @@ class ExportController extends Controller
                         'customers.first_name',
                         'customers.last_name',
                         DB::raw('SUM(total) as deuda_total'),
-                        DB::raw('COUNT(DISTINCT CASE WHEN payments.status = "PENDING" THEN MONTH(date_serv) END) as meses_deuda'))
+                        DB::raw('COUNT(DISTINCT CASE WHEN payments.status = "PENDING" THEN MONTH(date_serv) END) as meses_deuda')
+                    )
                     /* ->where('payments.status', 'PENDING') */ // Ajusta según tu necesidad
                     ->groupBy('payments.customer_id', 'customers.first_name', 'customers.last_name')
                     ->havingRaw('meses_deuda >= ?', [0])
@@ -118,7 +119,8 @@ class ExportController extends Controller
                         'customers.first_name',
                         'customers.last_name',
                         DB::raw('SUM(total) as deuda_total'),
-                        DB::raw('COUNT(DISTINCT CASE WHEN payments.status = "PENDING" THEN MONTH(date_serv) END) as meses_deuda'))
+                        DB::raw('COUNT(DISTINCT CASE WHEN payments.status = "PENDING" THEN MONTH(date_serv) END) as meses_deuda')
+                    )
                     /* ->where('payments.status', 'PENDING') */ // Ajusta según tu necesidad
                     ->groupBy('payments.customer_id', 'customers.first_name', 'customers.last_name')
                     ->havingRaw('meses_deuda >= ?', [$reportType - 1])
@@ -153,7 +155,8 @@ class ExportController extends Controller
                         'customers.first_name',
                         'customers.last_name',
                         DB::raw('SUM(total) as deuda_total'),
-                        DB::raw('COUNT(DISTINCT CASE WHEN payments.status = "PENDING" THEN MONTH(date_serv) END) as meses_deuda'))
+                        DB::raw('COUNT(DISTINCT CASE WHEN payments.status = "PENDING" THEN MONTH(date_serv) END) as meses_deuda')
+                    )
                     /* ->where('payments.status', 'PENDING') */ // Ajusta según tu necesidad
                     ->groupBy('payments.customer_id', 'customers.first_name', 'customers.last_name')
                     ->havingRaw('meses_deuda = ?', [$reportType - 1])
@@ -180,7 +183,7 @@ class ExportController extends Controller
         }
 
         /* dd($data, $nombre); */
-        $pdf = PDF::loadView('pdf.reporteService', compact('data', 'nombre', 'locationid', 'reportType'));
+        $pdf = PDF::loadView('pdf.reporteDebt', compact('data', 'nombre', 'locationid', 'reportType'));
 
         /*
         $pdf = new DOMPDF();
@@ -193,10 +196,55 @@ class ExportController extends Controller
         $pdf->set_base_path('/');
         */
 
-        return $pdf->stream('servicesReport.pdf'); // visualizar
+        return $pdf->stream('debtReport.pdf'); // visualizar
         //$customReportName = 'salesReport_'.Carbon::now()->format('Y-m-d').'.pdf';
         //return $pdf->download($customReportName); //descargar
 
+    }
+
+    public function reportServicePDF($locationid)
+    {
+        $data = [];
+        Carbon::setLocale('es');
+
+        $nombre = '';
+        if ($locationid == 0) {
+            $data = DB::table('locations')
+                ->leftJoin('customers', 'locations.id', '=', 'customers.location_id')
+                ->leftJoin('services', 'customers.service_id', '=', 'services.id')
+                ->leftJoin('plans', 'services.plan_id', '=', 'plans.id')
+                ->select(
+                    'locations.id as location_id',
+                    'locations.name as location_name',
+                    'services.name as service_name',
+                    DB::raw('COUNT(services.id) as services_count'),
+                    'plans.name as plan_name',
+                    'services.price'
+                )
+                ->groupBy('locations.id', 'locations.name', 'services.name', 'plans.name', 'services.price')
+                ->get();
+        } else {
+            $location = Location::find($locationid);
+            $nombre = $location->name;
+            $data = DB::table('locations')
+                ->leftJoin('customers', 'locations.id', '=', 'customers.location_id')
+                ->leftJoin('services', 'customers.service_id', '=', 'services.id')
+                ->leftJoin('plans', 'services.plan_id', '=', 'plans.id')
+                ->select(
+                    'locations.id as location_id',
+                    'locations.name as location_name',
+                    'services.name as service_name',
+                    DB::raw('COUNT(services.id) as services_count'),
+                    'plans.name as plan_name',
+                    'services.price'
+                )
+                ->where('locations.id', $locationid)
+                ->groupBy('locations.id', 'locations.name', 'services.name', 'plans.name', 'services.price')
+                ->get();
+        }
+
+        $pdf = PDF::loadView('pdf.reporteService', compact('data', 'nombre', 'locationid'));
+        return $pdf->stream('servicesReport.pdf'); // visualizar
     }
 
     public function reportCustomerPDF($namec, $cid, $location)

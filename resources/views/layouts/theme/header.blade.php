@@ -6,7 +6,7 @@
                     <i class="icon-menu menu-icon"></i>
                 </a>
             </li>
-            <livewire:search-controller>
+            {{-- <livewire:search-controller> --}}
         </ul>
 
         <ul class="navbar-nav align-items-center right-nav-link">

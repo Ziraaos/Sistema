@@ -16,7 +16,7 @@ class ProductsController extends Component
     use CartTrait;
 
     public $name, $barcode, $cost, $price, $stock, $alerts, $image, $categoryid, $search, $selected_id, $pageTitle, $componentName;
-    private $pagination = 5;
+    private $pagination = 10;
     protected $paginationTheme = 'bootstrap';
 
     public function ScanCode($code)

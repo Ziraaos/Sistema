@@ -11,7 +11,7 @@ class DiscountsController extends Component
     use WithPagination;
 
     public $name, $days_dwntm, $search, $selected_id, $pageTitle, $componentName;
-    private $pagination = 5;
+    private $pagination = 10;
     protected $paginationTheme = 'bootstrap';
 
     public function mount(){

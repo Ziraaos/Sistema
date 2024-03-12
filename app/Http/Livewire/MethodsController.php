@@ -11,7 +11,7 @@ class MethodsController extends Component
     use WithPagination;
 
     public $name, $financial_entity, $account_number, $beneficiary, $ci, $note, $search, $selected_id, $pageTitle, $componentName;
-    private $pagination = 5;
+    private $pagination = 10;
     protected $paginationTheme = 'bootstrap';
 
     public function mount(){

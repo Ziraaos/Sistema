@@ -5,7 +5,7 @@
                 {{-- <a href="javascript:void();" class="dropdown-toggle dropdown-toggle-nocaret" data-toggle="dropdown">
                     <i class="icon-options"></i>
                 </a> --}}
-                @can('Service_Create')
+                @can('Plan_Create')
                     <li>
                         <a href="javascript:void(0)" class="tabmenu btn bg-primary" data-toggle="modal"
                             data-target="#theModal">Agregar</a>
@@ -16,7 +16,7 @@
     </div>
 
     <div class="card-body">
-        @can('Service_Search')
+        @can('Plan_Search')
             @include('common.searchbox')
         @endcan
         <div class="table-responsive">
@@ -24,35 +24,26 @@
                 <thead>
                     <tr>
                         <th scope="col">#</th>
-                        <th scope="col">Nombre</th>
-                        <th scope="col">Precio</th>
-                        <th scope="col">Velocidad bajada</th>
-                        <th scope="col">Velocidad subida</th>
-                        <th scope="col">Plan</th>
+                        <th scope="col">Descripción</th>
                         <th scope="col">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($services as $service)
+                    @foreach ($plans as $plan)
                         <tr>
-                            <th scope="row">{{ $service->id }}</th>
-                            <td>{{ $service->name }}</td>
-                            <td>{{ $service->price }}</td>
-                            <td>{{ $service->dwn_spd }}</td>
-                            <td>{{ $service->up_spd }}</td>
-                            <td>{{ $service->plan->name }}</td>
+                            <th scope="row">{{ $plan->id }}</th>
+                            <td>{{ $plan->name }}</td>
                             <td>
-                                @can('Service_Update')
-                                    <a href="javascript:void(0)" wire:click="Edit('{{ $service->id }}')"
+                                @can('Plan_Update')
+                                    <a href="javascript:void(0)" wire:click="Edit('{{ $plan->id }}')"
                                         class="btn btn-info" title="Edit">
                                         <i class="fas fa-edit"></i>
                                     </a>
                                 @endcan
-                                @can('Service_Destroy')
-                                    {{-- @if ($service->products->count() < 1) --}}
+                                @can('Plan_Destroy')
+                                    {{-- @if ($plan->products->count() < 1) --}}
                                     <a href="javascript:void(0)"
-                                        {{-- onclick="Confirm('{{ $service->id }}' , '{{ $service->products->count() }}')" --}}
-                                        onclick="Confirm('{{ $service->id }}')"
+                                        onclick="Confirm('{{ $plan->id }}')"
                                         class="btn btn-danger" title="Delete">
                                         <i class="fas fa-trash"></i>
                                     </a>
@@ -63,23 +54,23 @@
                     @endforeach
                 </tbody>
             </table>
-            {{ $services->links() }}
+            {{ $plans->links() }}
         </div>
     </div>
-    @include('livewire.service.form')
+    @include('livewire.plan.form')
 </div>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        window.livewire.on('service-added', msg => {
+        window.livewire.on('plan-added', msg => {
             $('#theModal').modal('hide');
             noty(msg)
         });
-        window.livewire.on('service-updated', msg => {
+        window.livewire.on('plan-updated', msg => {
             $('#theModal').modal('hide');
             noty(msg)
         });
-        window.livewire.on('service-deleted', msg => {
+        window.livewire.on('plan-deleted', msg => {
             noty(msg)
         });
         window.livewire.on('hide-modal', msg => {
@@ -95,7 +86,7 @@
 
     function Confirm(id, products) {
         if (products > 0) {
-            swal('NO SE PUEDE ELIMINAR EL PLAN PORQUE TIENE CLIENTES RELACIONADOS')
+            swal('NO SE PUEDE ELIMINAR LA CATEGORIA PORQUE TIENE PRODUCTOS RELACIONADOS')
             return;
         }
         swal({

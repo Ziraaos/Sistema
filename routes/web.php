@@ -20,9 +20,11 @@ use App\Http\Livewire\DiscountsController;
 use App\Http\Livewire\LocationsController;
 use App\Http\Livewire\MethodsController;
 use App\Http\Livewire\PaymentsController;
+use App\Http\Livewire\PlansController;
 use App\Http\Livewire\ProfileController;
 use App\Http\Livewire\ReportServiceController;
 use App\Http\Livewire\ReportCustomerController;
+use App\Http\Livewire\ReportDebtController;
 use App\Http\Livewire\ServicesController;
 use App\Http\Livewire\UsersController;
 
@@ -54,6 +56,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('coins', CoinsController::class);
     Route::get('pos', PosController::class);
     Route::get('profile', ProfileController::class);
+    Route::get('plans', PlansController::class);
     Route::get('services', ServicesController::class);
     Route::get('discounts', DiscountsController::class);
     Route::get('locations', LocationsController::class);
@@ -71,6 +74,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('cashout', CashoutController::class);
     Route::get('reports', ReportsController::class);
     Route::get('reportService', ReportServiceController::class);
+    Route::get('reportDebt', ReportDebtController::class);
     Route::get('reportCustomer', ReportCustomerController::class);
     /* Route::get('services', ServicesController::class); */
 
@@ -78,8 +82,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('report/pdf/{user}/{type}/{f1}/{f2}', [ExportController::class, 'reportPDF']);
     Route::get('report/pdf/{user}/{type}', [ExportController::class, 'reportPDF']);
 
+    //reportes deudas
+    Route::get('reportDebt/pdf/{location}/{type}', [ExportController::class, 'reportDebtPDF']);
+
     //reportes servicios
-    Route::get('reportService/pdf/{location}/{type}', [ExportController::class, 'reportServicePDF']);
+    Route::get('reportService/pdf/{location}', [ExportController::class, 'reportServicePDF']);
 
     //reportes clientes
     Route::get('reportCustomer/pdf/{namec}/{cid}/{location}', [ExportController::class, 'reportCustomerPDF']);

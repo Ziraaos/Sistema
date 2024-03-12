@@ -29,6 +29,18 @@
             @error('up_spd') <span class="text-danger er">{{ $message }}</span> @enderror
         </div>
     </div>
+    <div class="col-sm-12 col-md-4">
+        <div class="form-group">
+            <label>Plan</label>
+            <select wire:model='planid' class="form-control">
+                <option value="Elegir" disabled>Elegir</option>
+                @foreach ($plans as $plan)
+                    <option value="{{ $plan->id }}">{{ $plan->name }}</option>
+                @endforeach
+            </select>
+            @error('planid') <span class="text-danger er">{{ $message }}</span> @enderror
+        </div>
+    </div>
 </div>
 
 @include('common.modalFooter')

@@ -15,7 +15,7 @@ class ReportCustomerController extends Component
     use WithPagination;
 
     public $search, $selected_id, $paymentDetails, $namec, $localidad, $details, $sumDetails, $cid;
-    private $pagination = 15;
+    private $pagination = 10;
     protected $paginationTheme = 'bootstrap';
 
     public function mount()
