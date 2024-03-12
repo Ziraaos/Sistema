@@ -17,16 +17,13 @@
             <table class="table table-hover">
                 <thead>
                     <tr>
-                        <th scope="col">#</th>
                         <th scope="col">Nombres</th>
                         <th scope="col">Apellidos</th>
-                        <th scope="col">C.I.</th>
-                        <th scope="col">Email</th>
+                        <th scope="col">NIT/C.I.</th>
                         <th scope="col">Celular</th>
                         <th scope="col">ubicación servicio</th>
                         <th scope="col">Servicio / Plan</th>
-                        <th scope="col">Descuento</th>
-                        <th scope="col">Dirección</th>
+                        <th scope="col">Deuda</th>
                         <th scope="col">Imágen</th>
                         <th scope="col">Estado</th>
                         <th scope="col">Acciones</th>
@@ -35,23 +32,13 @@
                 <tbody>
                     @foreach ($customers as $customer)
                         <tr>
-                            <th scope="row">{{ $customer->id }}</th>
                             <td>{{ $customer->first_name }}</td>
                             <td>{{ $customer->last_name }}</td>
                             <td>{{ $customer->ci }}</td>
-                            <td>{{ $customer->email }}</td>
-                            <td>{{ $customer->phone }}</td>
+                            <td><a href="{{'https://wa.me/+591'.$customer->phone }}" style="color:#54ff6b;" target="_blank">{{ $customer->phone }}</td>
                             <td>{{ $customer->location }}</td>
                             <td>{{ $customer->service }}</td>
-                            <td>
-                                <span
-                                    class="badge {{ $customer->disc == 'YES' ? 'badge-success' : 'badge-danger' }} text-uppercase">{{ $customer->disc }}</span>
-                            </td>
-                            <td>
-                                {{-- {{ $customer->address }} --}}
-                                <a href="https://www.google.com/maps/search/?api=1&query={{ $customer->address }}&zoom=10"
-                                    target="_blank"><img height="25px" src="assets/images/Google_Maps_icon.png" /></a>
-                            </td>
+                            <td>{{ $customer->total_debt }}</td>
                             <td>
                                 <span>
                                     <img src="{{ asset('storage/' . $customer->imagen) }}" height="70"
@@ -63,9 +50,17 @@
                                     class="badge {{ $customer->status == 'Active' ? 'badge-success' : 'badge-danger' }} text-uppercase">{{ $customer->status }}</span>
                             </td>
                             <td>
-                                <button wire:click.prevent="getDetails({{ $customer->id }})"
-                                    class="btn btn-dark">
+                                <button wire:click.prevent="getDetails({{ $customer->id }})" class="btn btn-dark">
                                     <i class="fas fa-list"></i>
+                                </button>
+                                {{-- <button type="button" onclick="rePrint({{ $d->id }})"
+                                    class="btn btn-dark btn-sm">
+                                    <i class="fas fa-print"></i>
+                                </button> --}}
+                                <button class="btn btn-dark"
+                                    {{ $customer->total_debt > 0 || $customer->total_debt !== null ? '' : 'disabled' }}
+                                    onclick="window.open('{{ url('reportCustomer/pdf' . '/' . $customer->first_name . ' '. $customer->last_name . '/' . $customer->id . '/' . $customer->location) }}', '_blank')">
+                                    <i class="fas fa-print"></i>
                                 </button>
                             </td>
                         </tr>

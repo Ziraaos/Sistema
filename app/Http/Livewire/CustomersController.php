@@ -14,7 +14,7 @@ class CustomersController extends Component
     use WithPagination;
     use WithFileUploads;
 
-    public $first_name, $last_name, $email, $phone, $disc, $address, $image, $status, $locationid, $serviceid, $search, $selected_id, $pageTitle, $componentName;
+    public $first_name, $last_name, $ci, $email, $phone, $disc, $address, $image, $status, $locationid, $serviceid, $search, $selected_id, $pageTitle, $componentName;
     private $pagination = 10;
     protected $paginationTheme = 'bootstrap';
 
@@ -35,6 +35,7 @@ class CustomersController extends Component
                 ->select('customers.*', 'l.name as location', 's.name as service')
                 ->where('customers.first_name', 'like', '%' . $this->search . '%')
                 ->orWhere('customers.last_name', 'like', '%' . $this->search . '%')
+                ->orWhere('customers.ci', 'like', '%' . $this->search . '%')
                 ->orWhere('l.name', 'like', '%' . $this->search . '%')
                 ->orderBy('customers.first_name', 'asc')
                 ->paginate($this->pagination);
@@ -45,7 +46,6 @@ class CustomersController extends Component
                 ->orderBy('customers.first_name', 'asc')
                 ->paginate($this->pagination);
         }
-
         return view('livewire.customer.customers', [
             'customers' => $data,
             'locations' => Location::orderBy('name', 'asc')->get(),
@@ -59,6 +59,7 @@ class CustomersController extends Component
         $this->first_name = $customer->first_name;
         $this->selected_id = $customer->id;
         $this->last_name = $customer->last_name;
+        $this->ci = $customer->ci;
         $this->email = $customer->email;
         $this->phone = $customer->phone;
         $this->disc = $customer->disc;
@@ -76,6 +77,7 @@ class CustomersController extends Component
         $rules = [
             'first_name' => 'required|min:3',
             'last_name' => 'required|min:3',
+            'ci' => 'required|min:6',
             'phone' => 'required',
             'address' => 'required',
             'locationid' => 'required|not_in:Elegir',
@@ -86,6 +88,8 @@ class CustomersController extends Component
             'first_name.min' => 'El nombre del cliente debe tener al menos 3 caracteres',
             'last_name.required' => 'Apellido del cliente es requerido',
             'last_name.min' => 'El apellido del cliente debe tener al menos 3 caracteres',
+            'ci.required' => 'NIT o C.I. del cliente es requerido',
+            'ci.min' => 'El NIT o C.I. del cliente debe tener al menos 6 caracteres',
             'phone.required' => 'El num. de telefono es requerido',
             'address.required' => 'La dirección es requerida',
             'locationid.not_in' => 'Elige un nombre de ubicación diferente de Elegir',
@@ -96,6 +100,7 @@ class CustomersController extends Component
         $customer = Customer::create([
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
+            'ci' => $this->ci,
             'email' => $this->email,
             'phone' => $this->phone,
             'disc' => $this->disc,
@@ -121,6 +126,7 @@ class CustomersController extends Component
         $rules = [
             'first_name' => "required|min:3,first_name,{$this->selected_id}",
             'last_name' => 'required|min:3',
+            'ci' => 'required|min:6',
             'phone' => 'required',
             'address' => 'required',
             'locationid' => 'required|not_in:Elegir',
@@ -131,6 +137,8 @@ class CustomersController extends Component
             'first_name.min' => 'El nombre del cliente debe tener al menos 3 caracteres',
             'last_name.required' => 'Apellido del cliente es requerido',
             'last_name.min' => 'El apellido del cliente debe tener al menos 3 caracteres',
+            'ci.required' => 'NIT o C.I. del cliente es requerido',
+            'ci.min' => 'El NIT o C.I. del cliente debe tener al menos 6 caracteres',
             'phone.required' => 'El num. de telefono es requerido',
             'address.required' => 'La dirección es requerida',
             'locationid.not_in' => 'Elige un nombre de ubicación diferente de Elegir',
@@ -143,6 +151,7 @@ class CustomersController extends Component
         $customer->update([
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
+            'ci' => $this->ci,
             'email' => $this->email,
             'phone' => $this->phone,
             'disc' => $this->disc,
@@ -197,6 +206,7 @@ class CustomersController extends Component
     {
         $this->first_name = '';
         $this->last_name = '';
+        $this->ci = '';
         $this->email = '';
         $this->phone = '';
         $this->disc = '';

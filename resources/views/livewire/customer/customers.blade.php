@@ -23,9 +23,9 @@
             <table class="table table-hover">
                 <thead>
                     <tr>
-                        <th scope="col">#</th>
                         <th scope="col">Nombres</th>
                         <th scope="col">Apellidos</th>
+                        <th scope="col">NIT/C.I.</th>
                         <th scope="col">Email</th>
                         <th scope="col">Celular</th>
                         <th scope="col">ubicación servicio</th>
@@ -40,11 +40,11 @@
                 <tbody>
                     @foreach ($customers as $customer)
                         <tr>
-                            <th scope="row">{{ $customer->id }}</th>
                             <td>{{ $customer->first_name }}</td>
                             <td>{{ $customer->last_name }}</td>
+                            <td>{{ $customer->ci }}</td>
                             <td>{{ $customer->email }}</td>
-                            <td>{{ $customer->phone }}</td>
+                            <td><a href="{{'https://wa.me/+591'.$customer->phone }}" style="color:#54ff6b;" target="_blank"> {{ $customer->phone }} </a></td>
                             <td>{{ $customer->location }}</td>
                             <td>{{ $customer->service }}</td>
                             <td>

@@ -21,6 +21,15 @@
     </div>
     <div class="col-sm-12 col-md-6">
         <div class="form-group">
+            <label>NIT/C.I.</label>
+            <input type="text" wire:model.lazy="ci" class="form-control" placeholder="ej: 10000000">
+            @error('ci')
+                <span class="text-danger er">{{ $message }}</span>
+            @enderror
+        </div>
+    </div>
+    <div class="col-sm-12 col-md-6">
+        <div class="form-group">
             <label>Email</label>
             <input type="text" wire:model.lazy="email" class="form-control" placeholder="ej: example@gmail.com">
             @error('email')

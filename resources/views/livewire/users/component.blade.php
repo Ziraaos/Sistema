@@ -48,7 +48,7 @@
                             </td>
                             <td class="text-uppercase">
                                 {{ $r->profile }}
-                                <small><b>Roles:</b>{{ implode(',', $r->getRoleNames()->toArray()) }}</small>
+                                {{-- <small><b>Roles:</b>{{ implode(',', $r->getRoleNames()->toArray()) }}</small> --}}
                             </td>
                             <td>
                                 <span>

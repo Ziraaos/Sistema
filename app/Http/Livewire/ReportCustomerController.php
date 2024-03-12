@@ -7,6 +7,7 @@ use App\Models\Location;
 use App\Models\Service;
 use App\Models\PaymentDetail;
 use App\Models\PaymentMethod;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -32,7 +33,7 @@ class ReportCustomerController extends Component
     public function render()
     {
         if (strlen($this->search) > 0) {
-            $data = Customer::join('locations as l', 'l.id', 'customers.location_id')
+            /* $data = Customer::join('locations as l', 'l.id', 'customers.location_id')
                 ->join('services as s', 's.id', 'customers.service_id')
                 ->select('customers.*', 'l.name as location', 's.name as service')
                 ->where('customers.first_name', 'like', '%' . $this->search . '%')
@@ -40,11 +41,34 @@ class ReportCustomerController extends Component
                 ->orWhere('customers.ci', 'like', '%' . $this->search . '%')
                 ->orWhere('l.name', 'like', '%' . $this->search . '%')
                 ->orderBy('customers.first_name', 'asc')
-                ->paginate($this->pagination);
-        } else {
+                ->paginate($this->pagination); */
             $data = Customer::join('locations as l', 'l.id', 'customers.location_id')
                 ->join('services as s', 's.id', 'customers.service_id')
+                ->leftJoin('payments', 'payments.customer_id', '=', 'customers.id') // Cambié a leftJoin para incluir clientes sin pagos
+                ->select(
+                    'customers.*',
+                    'l.name as location',
+                    's.name as service',
+                    DB::raw('SUM(payments.total) as total_debt')
+                )
+                ->where('customers.first_name', 'like', '%' . $this->search . '%')
+                ->orWhere('customers.last_name', 'like', '%' . $this->search . '%')
+                ->orWhere('customers.ci', 'like', '%' . $this->search . '%')
+                ->orWhere('l.name', 'like', '%' . $this->search . '%')
+                ->groupBy('customers.id', 'l.name', 's.name') // Agrupa por cliente para evitar duplicados
+                ->orderBy('customers.first_name', 'asc')
+                ->paginate($this->pagination);
+        } else {
+            /* $data = Customer::join('locations as l', 'l.id', 'customers.location_id')
+                ->join('services as s', 's.id', 'customers.service_id')
                 ->select('customers.*', 'l.name as location', 's.name as service')
+                ->orderBy('customers.first_name', 'asc')
+                ->paginate($this->pagination); */
+            $data = Customer::join('locations as l', 'l.id', 'customers.location_id')
+                ->join('services as s', 's.id', 'customers.service_id')
+                ->leftJoin('payments', 'payments.customer_id', '=', 'customers.id') // Cambié a leftJoin para incluir clientes sin pagos
+                ->select('customers.*', 'l.name as location', 's.name as service', DB::raw('SUM(payments.total) as total_debt'))
+                ->groupBy('customers.id', 'l.name', 's.name') // Agrupa por cliente para evitar duplicados
                 ->orderBy('customers.first_name', 'asc')
                 ->paginate($this->pagination);
         }
@@ -53,7 +77,8 @@ class ReportCustomerController extends Component
             'customers' => $data,
             'locations' => Location::orderBy('name', 'asc')->get(),
             'services' => Service::orderBy('name', 'asc')->get(),
-            /* 'methods' => PaymentMethod::orderBy('name', 'asc')->get() */])
+            /* 'methods' => PaymentMethod::orderBy('name', 'asc')->get() */
+        ])
             ->extends('layouts.theme.app')
             ->section('content');
     }
